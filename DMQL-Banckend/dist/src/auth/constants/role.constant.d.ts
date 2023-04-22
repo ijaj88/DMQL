@@ -2,5 +2,7 @@ export declare enum ROLE {
     USER = "USER",
     PRESENTER = "PRESENTER",
     ADMIN = "ADMIN",
-    ASSISTANT = "ASSISTANT"
+    ASSISTANT = "ASSISTANT",
+    DOCTOR = "DOCTOR",
+    PATIENT = "PATIENT"
 }

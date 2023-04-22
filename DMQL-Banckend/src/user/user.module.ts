@@ -8,11 +8,12 @@ import { User } from './entities/users.entity';
 import { UserRepository } from './repositories/user.repository';
 import { UserService } from './services/user.service';
 import { UserAclService } from './services/user-acl.service';
+import  {DoctorController} from './controllers/doctor.controller';
 
 @Module({
   imports: [SharedModule, TypeOrmModule.forFeature([User])],
   providers: [UserService, JwtAuthStrategy, UserAclService, UserRepository],
-  controllers: [UserController],
+  controllers: [UserController,DoctorController],
   exports: [UserService],
 })
 export class UserModule {}

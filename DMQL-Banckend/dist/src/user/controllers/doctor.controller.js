@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var UserController_1;
+var DoctorController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
+exports.DoctorController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
@@ -30,11 +30,11 @@ const csv_upload_dto_1 = require("../dtos/csv-upload.dto");
 const user_output_dto_1 = require("../dtos/user-output.dto");
 const user_update_input_dto_1 = require("../dtos/user-update-input.dto");
 const user_service_1 = require("../services/user.service");
-let UserController = UserController_1 = class UserController {
+let DoctorController = DoctorController_1 = class DoctorController {
     constructor(userService, logger) {
         this.userService = userService;
         this.logger = logger;
-        this.logger.setContext(UserController_1.name);
+        this.logger.setContext(DoctorController_1.name);
     }
     async getMyProfile(ctx) {
         this.logger.log(ctx, `${this.getMyProfile.name} was called`);
@@ -85,7 +85,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getMyProfile", null);
+], DoctorController.prototype, "getMyProfile", null);
 __decorate([
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     (0, common_1.Get)(),
@@ -108,7 +108,7 @@ __decorate([
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
         pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUsers", null);
+], DoctorController.prototype, "getUsers", null);
 __decorate([
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     (0, common_1.Get)(':id'),
@@ -132,7 +132,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext, Number]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUser", null);
+], DoctorController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Post)('upload'),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
@@ -151,7 +151,7 @@ __decorate([
     __metadata("design:paramtypes", [csv_upload_dto_1.CSVUploadDto,
         request_context_dto_1.RequestContext, Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "uploadFile", null);
+], DoctorController.prototype, "uploadFile", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
@@ -174,7 +174,7 @@ __decorate([
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
         user_update_input_dto_1.UpdateUserInput]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "updateUser", null);
+], DoctorController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
@@ -197,12 +197,12 @@ __decorate([
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
         user_update_input_dto_1.UpdateRoleDto]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "updateRole", null);
-UserController = UserController_1 = __decorate([
+], DoctorController.prototype, "updateRole", null);
+DoctorController = DoctorController_1 = __decorate([
     (0, swagger_1.ApiTags)('users'),
-    (0, common_1.Controller)('users/patient'),
+    (0, common_1.Controller)('users/doctor'),
     __metadata("design:paramtypes", [user_service_1.UserService,
         logger_service_1.AppLogger])
-], UserController);
-exports.UserController = UserController;
-//# sourceMappingURL=user.controller.js.map
+], DoctorController);
+exports.DoctorController = DoctorController;
+//# sourceMappingURL=doctor.controller.js.map

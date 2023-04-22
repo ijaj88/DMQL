@@ -17,7 +17,6 @@ const jwt_1 = require("@nestjs/jwt");
 const class_transformer_1 = require("class-transformer");
 const logger_service_1 = require("../../shared/logger/logger.service");
 const user_service_1 = require("../../user/services/user.service");
-const role_constant_1 = require("../constants/role.constant");
 const auth_register_output_dto_1 = require("../dtos/auth-register-output.dto");
 const auth_token_output_dto_1 = require("../dtos/auth-token-output.dto");
 let AuthService = AuthService_1 = class AuthService {
@@ -42,7 +41,6 @@ let AuthService = AuthService_1 = class AuthService {
     }
     async register(ctx, input) {
         this.logger.log(ctx, `${this.register.name} was called`);
-        input.roles = [role_constant_1.ROLE.USER];
         input.isAccountDisabled = false;
         const user = await this.userService.findByEmail(ctx, input.username + '@buffalo.edu');
         if (user) {

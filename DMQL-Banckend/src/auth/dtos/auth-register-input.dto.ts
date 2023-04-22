@@ -24,12 +24,10 @@ export class RegisterInput {
   @IsString()
   password: string;
 
-  @ApiPropertyOptional({ example: [1,2,3] })
-  @IsArray()
-  @IsOptional()
-  affilations?: number[];
 
+  @ApiProperty({  })
+  @IsNotEmpty()
   // These keys can only be set by ADMIN user.
-  roles: ROLE[] = [ROLE.USER];
+  roles: ROLE[];
   isAccountDisabled: boolean;
 }

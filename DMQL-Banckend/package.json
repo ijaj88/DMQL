@@ -27,9 +27,7 @@
     "migration:run": "ts-node node_modules/.bin/typeorm migration:run -d ormconfig.ts",
     "migration:revert": "ts-node node_modules/.bin/typeorm migration:revert -d ormconfig.ts",
     "doc:serve": "npx compodoc -p tsconfig.json -w -s -r 8001",
-    "doc:generate": "npx compodoc -p tsconfig.json",
-    "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "doc:generate": "npx compodoc -p tsconfig.json"
   },
   "lint-staged": {
     "**/*.ts": [

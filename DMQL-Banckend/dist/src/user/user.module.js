@@ -16,13 +16,14 @@ const users_entity_1 = require("./entities/users.entity");
 const user_repository_1 = require("./repositories/user.repository");
 const user_service_1 = require("./services/user.service");
 const user_acl_service_1 = require("./services/user-acl.service");
+const doctor_controller_1 = require("./controllers/doctor.controller");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [shared_module_1.SharedModule, typeorm_1.TypeOrmModule.forFeature([users_entity_1.User])],
         providers: [user_service_1.UserService, jwt_auth_strategy_1.JwtAuthStrategy, user_acl_service_1.UserAclService, user_repository_1.UserRepository],
-        controllers: [user_controller_1.UserController],
+        controllers: [user_controller_1.UserController, doctor_controller_1.DoctorController],
         exports: [user_service_1.UserService],
     })
 ], UserModule);

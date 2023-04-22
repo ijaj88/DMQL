@@ -27,10 +27,6 @@ export class CreateUserInput {
   @Length(6, 100)
   password: string;
 
-  @ApiPropertyOptional({ example: [1, 2, 3] })
-  @IsArray()
-  @IsOptional()
-  affilations?: number[];
 
   @ApiProperty()
   @IsArray()

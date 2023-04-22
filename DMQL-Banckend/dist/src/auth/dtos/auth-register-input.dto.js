@@ -12,11 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterInput = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const role_constant_1 = require("../constants/role.constant");
 class RegisterInput {
-    constructor() {
-        this.roles = [role_constant_1.ROLE.USER];
-    }
 }
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'hkakkad' }),
@@ -32,10 +28,9 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterInput.prototype, "password", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: [1, 2, 3] }),
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({}),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Array)
-], RegisterInput.prototype, "affilations", void 0);
+], RegisterInput.prototype, "roles", void 0);
 exports.RegisterInput = RegisterInput;
 //# sourceMappingURL=auth-register-input.dto.js.map

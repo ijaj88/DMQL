@@ -3,4 +3,6 @@ export enum ROLE {
   PRESENTER = 'PRESENTER',
   ADMIN = 'ADMIN',
   ASSISTANT = 'ASSISTANT',
+  DOCTOR = 'DOCTOR',
+  PATIENT = 'PATIENT',
 }
