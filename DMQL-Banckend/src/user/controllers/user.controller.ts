@@ -225,10 +225,10 @@ export class UserController {
     //type: SwaggerBaseApiResponse(EventOutput),
   })
   async createEvent(
-    @Param() input: PatientAppointmentsDto,
+    @Param('id') input: number,
     @ReqContext() ctx: RequestContext,
   ) {
-    const createdEvent = await this.userService.Book(ctx, input.id);
+    const createdEvent = await this.userService.Book(ctx, input);
     return { data: createdEvent, meta: {} };
   }
 
