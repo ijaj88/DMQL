@@ -8,6 +8,6 @@ export declare class LocalStrategy extends LocalStrategy_base {
     private authService;
     private readonly logger;
     constructor(authService: AuthService, logger: AppLogger);
-    validate(request: Request, username: string, password: string): Promise<UserAccessTokenClaims>;
+    validate(request: Request, username: string, password: string, role: string): Promise<UserAccessTokenClaims>;
 }
 export {};

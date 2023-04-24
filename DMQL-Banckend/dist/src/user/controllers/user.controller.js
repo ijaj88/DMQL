@@ -30,6 +30,7 @@ const csv_upload_dto_1 = require("../dtos/csv-upload.dto");
 const user_output_dto_1 = require("../dtos/user-output.dto");
 const user_update_input_dto_1 = require("../dtos/user-update-input.dto");
 const user_service_1 = require("../services/user.service");
+const user_appointment_dto_1 = require("../dtos/user-appointment.dto");
 let UserController = UserController_1 = class UserController {
     constructor(userService, logger) {
         this.userService = userService;
@@ -63,6 +64,10 @@ let UserController = UserController_1 = class UserController {
         this.logger.log(ctx, `${this.updateUser.name} was called`);
         const user = await this.userService.updateRole(ctx, input);
         return { data: user, meta: {} };
+    }
+    async createEvent(input, ctx) {
+        const createdEvent = await this.userService.Book(ctx, input.id);
+        return { data: createdEvent, meta: {} };
     }
 };
 __decorate([
@@ -198,6 +203,24 @@ __decorate([
         user_update_input_dto_1.UpdateRoleDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateRole", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
+    (0, common_1.Post)('bookappoitmnet/:id'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Booking API',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.CREATED,
+    }),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, req_context_decorator_1.ReqContext)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_appointment_dto_1.PatientAppointmentsDto,
+        request_context_dto_1.RequestContext]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "createEvent", null);
 UserController = UserController_1 = __decorate([
     (0, swagger_1.ApiTags)('users'),
     (0, common_1.Controller)('users/patient'),

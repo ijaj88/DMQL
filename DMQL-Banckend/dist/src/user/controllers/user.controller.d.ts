@@ -8,6 +8,7 @@ import { UserOutput } from '../dtos/user-output.dto';
 import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/user.service';
+import { PatientAppointmentsDto } from '../dtos/user-appointment.dto';
 export declare class UserController {
     private readonly userService;
     private readonly logger;
@@ -18,4 +19,8 @@ export declare class UserController {
     uploadFile(input: CSVUploadDto, ctx: RequestContext, file: Express.Multer.File): Promise<void>;
     updateUser(ctx: RequestContext, input: UpdateUserInput): Promise<BaseApiResponse<UserOutput>>;
     updateRole(ctx: RequestContext, input: UpdateRoleDto): Promise<BaseApiResponse<UserOutput>>;
+    createEvent(input: PatientAppointmentsDto, ctx: RequestContext): Promise<{
+        data: void;
+        meta: {};
+    }>;
 }

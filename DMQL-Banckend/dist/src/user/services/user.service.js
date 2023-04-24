@@ -19,18 +19,49 @@ const logger_service_1 = require("../../shared/logger/logger.service");
 const user_output_dto_1 = require("../dtos/user-output.dto");
 const users_entity_1 = require("../entities/users.entity");
 const user_repository_1 = require("../repositories/user.repository");
+const patient_entity_1 = require("../entities/patient.entity");
+const patient_repository_1 = require("../repositories/patient.repository");
+const doctor_entity_1 = require("../entities/doctor.entity");
+const doctor_repository_1 = require("../repositories/doctor.repository");
+const admin_repository_1 = require("../repositories/admin.repository");
+const admin_entity_1 = require("../entities/admin.entity");
+const appointment_repository_1 = require("../repositories/appointment.repository");
 let UserService = UserService_1 = class UserService {
-    constructor(repository, logger) {
+    constructor(repository, logger, patientRepository, doctorRepository, adminRepository, appointmentRepository) {
         this.repository = repository;
         this.logger = logger;
+        this.patientRepository = patientRepository;
+        this.doctorRepository = doctorRepository;
+        this.adminRepository = adminRepository;
+        this.appointmentRepository = appointmentRepository;
         this.logger.setContext(UserService_1.name);
     }
     async createUser(ctx, input) {
         this.logger.log(ctx, `${this.createUser.name} was called`);
+        console.log(input);
         const user = (0, class_transformer_1.plainToClass)(users_entity_1.User, input);
         user.password = await (0, bcrypt_1.hash)(input.password, 10);
-        this.logger.log(ctx, `calling ${user_repository_1.UserRepository.name}.saveUser`);
         const savedUser = await this.repository.save(user);
+        var a = savedUser.roles[0];
+        if (a === 'PATIENT') {
+            const userpatient = (0, class_transformer_1.plainToClass)(patient_entity_1.patient, input);
+            userpatient.user = savedUser;
+            console.log(userpatient, input);
+            const retpat = await this.patientRepository.save(userpatient);
+        }
+        if (a === 'DOCTOR') {
+            const userpatient = (0, class_transformer_1.plainToClass)(doctor_entity_1.Doctor, input);
+            userpatient.user = savedUser;
+            console.log(userpatient, input);
+            const retpat = await this.doctorRepository.save(userpatient);
+        }
+        if (a === 'ADMIN') {
+            const userpatient = (0, class_transformer_1.plainToClass)(admin_entity_1.Admin, input);
+            userpatient.user = savedUser;
+            console.log(userpatient, input);
+            const retpat = await this.adminRepository.save(userpatient);
+        }
+        this.logger.log(ctx, `calling ${user_repository_1.UserRepository.name}.saveUser`);
         return (0, class_transformer_1.plainToClass)(user_output_dto_1.UserOutput, user, {
             excludeExtraneousValues: true,
         });
@@ -138,11 +169,23 @@ let UserService = UserService_1 = class UserService {
             excludeExtraneousValues: true,
         });
     }
+    async Book(ctx, input) {
+        const user = await this.doctorRepository.findOne({ where: { id: input } });
+        const appoint = null;
+        appoint.doctor = user;
+        const pat = await this.patientRepository.findOne({ where: { id: ctx.user.id } });
+        appoint.patients = pat;
+        await this.appointmentRepository.save(appoint);
+    }
 };
 UserService = UserService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        logger_service_1.AppLogger])
+        logger_service_1.AppLogger,
+        patient_repository_1.PatientRepository,
+        doctor_repository_1.DoctorRepository,
+        admin_repository_1.AdminRepository,
+        appointment_repository_1.AppoitmentRepository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

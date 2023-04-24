@@ -16,6 +16,9 @@ import { UserService } from '../../user/services/user.service';
 import { ROLE } from '../constants/role.constant';
 import { RegisterInput } from '../dtos/auth-register-input.dto';
 import { RegisterOutput } from '../dtos/auth-register-output.dto';
+import { DoctorService } from 'src/user/services/doctor.service';
+import {patientRegister,DoctorRegister,AdminRegister} from '../dtos/auth-register-input.dto';
+
 import {
   AuthTokenOutput,
   UserAccessTokenClaims,
@@ -25,6 +28,7 @@ import {
 export class AuthService {
   constructor(
     private userService: UserService,
+    private DoctorService: DoctorService,
     private jwtService: JwtService,
     private configService: ConfigService,
     private readonly logger: AppLogger,
@@ -45,13 +49,12 @@ export class AuthService {
       email,
       pass,
     );
+    return user;
 
     // Prevent disabled users from logging in.
-    if (user.isAccountDisabled) {
-      throw new UnauthorizedException('This user account has been disabled');
-    }
 
-    return user;
+
+    return ;
   }
 
   login(ctx: RequestContext): AuthTokenOutput {
@@ -62,7 +65,7 @@ export class AuthService {
 
   async register(
     ctx: RequestContext,
-    input: RegisterInput,
+    input: RegisterInput | patientRegister | DoctorRegister | AdminRegister,
   ): Promise<RegisterOutput> {
     this.logger.log(ctx, `${this.register.name} was called`);
 
@@ -78,14 +81,26 @@ export class AuthService {
     if (user) {
       throw new BadRequestException('User with the email already exists');
     }
+    
+    if(input.TYPE ==='PATIENT'){
+    input.roles=[ROLE.PATIENT];
+    }
 
+    if(input.TYPE ==='DOCTOR'){
+      input.roles=[ROLE.DOCTOR];
+      }
+  
+    if(input.TYPE ==='ADMIN'){
+        input.roles=[ROLE.ADMIN];
+    }
+    
+
+    console.log(input);
     const registeredUser = await this.userService.createUser(ctx, {
       ...input,
       email: input.username + '@buffalo.edu',
-    });
-    return plainToClass(RegisterOutput, registeredUser, {
-      excludeExtraneousValues: true,
-    });
+    });  
+    return registeredUser
   }
 
   async refreshToken(ctx: RequestContext): Promise<AuthTokenOutput> {

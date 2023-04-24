@@ -24,12 +24,13 @@ let LocalStrategy = LocalStrategy_1 = class LocalStrategy extends (0, passport_1
             usernameField: 'username',
             passwordField: 'password',
             passReqToCallback: true,
+            roleField: 'role',
         });
         this.authService = authService;
         this.logger = logger;
         this.logger.setContext(LocalStrategy_1.name);
     }
-    async validate(request, username, password) {
+    async validate(request, username, password, role) {
         const ctx = (0, util_1.createRequestContext)(request);
         this.logger.log(ctx, `${this.validate.name} was called`);
         const user = await this.authService.validateUser(ctx, username, password);

@@ -43,6 +43,7 @@ import { UserOutput } from '../dtos/user-output.dto';
 import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/user.service';
+import { PatientAppointmentsDto} from '../dtos/user-appointment.dto'
 
 @ApiTags('users')
 @Controller('users/patient')
@@ -210,4 +211,25 @@ export class UserController {
     const user = await this.userService.updateRole(ctx, input);
     return { data: user, meta: {} };
   }
+
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post('bookappoitmnet/:id')
+  @ApiOperation({
+    summary: 'Booking API',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    //type: SwaggerBaseApiResponse(EventOutput),
+  })
+  async createEvent(
+    @Param() input: PatientAppointmentsDto,
+    @ReqContext() ctx: RequestContext,
+  ) {
+    const createdEvent = await this.userService.Book(ctx, input.id);
+    return { data: createdEvent, meta: {} };
+  }
+
 }

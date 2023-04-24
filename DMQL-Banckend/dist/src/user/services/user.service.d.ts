@@ -5,10 +5,18 @@ import { UserOutput } from '../dtos/user-output.dto';
 import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
 import { User } from '../entities/users.entity';
 import { UserRepository } from '../repositories/user.repository';
+import { PatientRepository } from '../repositories/patient.repository';
+import { DoctorRepository } from '../repositories/doctor.repository';
+import { AdminRepository } from '../repositories/admin.repository';
+import { AppoitmentRepository } from '../repositories/appointment.repository';
 export declare class UserService {
     private repository;
     private readonly logger;
-    constructor(repository: UserRepository, logger: AppLogger);
+    private readonly patientRepository;
+    private readonly doctorRepository;
+    private readonly adminRepository;
+    private readonly appointmentRepository;
+    constructor(repository: UserRepository, logger: AppLogger, patientRepository: PatientRepository, doctorRepository: DoctorRepository, adminRepository: AdminRepository, appointmentRepository: AppoitmentRepository);
     createUser(ctx: RequestContext, input: CreateUserInput): Promise<UserOutput>;
     findByIdInternal(ctx: RequestContext, id: number): Promise<User>;
     validateUsernamePassword(ctx: RequestContext, username: string, pass: string): Promise<UserOutput>;
@@ -23,4 +31,5 @@ export declare class UserService {
     findByUsername(ctx: RequestContext, username: string): Promise<UserOutput>;
     updateUser(ctx: RequestContext, userId: number, input: UpdateUserInput): Promise<UserOutput>;
     updateRole(ctx: RequestContext, input: UpdateRoleDto): Promise<UserOutput>;
+    Book(ctx: RequestContext, input: number): Promise<void>;
 }

@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
+const patient_entity_1 = require("./patient.entity");
+const doctor_entity_1 = require("./doctor.entity");
+const admin_entity_1 = require("./admin.entity");
 let User = class User {
 };
 __decorate([
@@ -21,30 +24,6 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], User.prototype, "ethnicity", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], User.prototype, "race", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], User.prototype, "level", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], User.prototype, "gender", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], User.prototype, "department", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Number)
-], User.prototype, "age", void 0);
 __decorate([
     (0, typeorm_1.Unique)('username', ['username']),
     (0, typeorm_1.Column)({ length: 200 }),
@@ -71,6 +50,18 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)({ name: 'updatedAt', nullable: true }),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patient_entity_1.patient, patient => patient.user),
+    __metadata("design:type", Array)
+], User.prototype, "patients", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => doctor_entity_1.Doctor, Doctor => Doctor.user),
+    __metadata("design:type", Array)
+], User.prototype, "doctors", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => admin_entity_1.Admin, Admin => Admin.user),
+    __metadata("design:type", Array)
+], User.prototype, "admins", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

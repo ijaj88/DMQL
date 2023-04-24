@@ -22,12 +22,12 @@ const req_context_decorator_1 = require("../../shared/request-context/req-contex
 const request_context_dto_1 = require("../../shared/request-context/request-context.dto");
 const auth_login_input_dto_1 = require("../dtos/auth-login-input.dto");
 const auth_refresh_token_input_dto_1 = require("../dtos/auth-refresh-token-input.dto");
-const auth_register_input_dto_1 = require("../dtos/auth-register-input.dto");
 const auth_register_output_dto_1 = require("../dtos/auth-register-output.dto");
 const auth_token_output_dto_1 = require("../dtos/auth-token-output.dto");
 const jwt_refresh_guard_1 = require("../guards/jwt-refresh.guard");
 const local_auth_guard_1 = require("../guards/local-auth.guard");
 const auth_service_1 = require("../services/auth.service");
+const auth_register_input_dto_1 = require("../dtos/auth-register-input.dto");
 let AuthController = AuthController_1 = class AuthController {
     constructor(authService, logger) {
         this.authService = authService;
@@ -36,11 +36,19 @@ let AuthController = AuthController_1 = class AuthController {
     }
     login(ctx, credential) {
         this.logger.log(ctx, `${this.login.name} was called`);
-        console.log(ctx.user.username, 'ctx.user.username');
+        console.log(ctx.user.username, 'ctx.user.username', credential);
         const authToken = this.authService.login(ctx);
         return { data: authToken, meta: {} };
     }
-    async registerLocal(ctx, input) {
+    async registerLocalP(ctx, input) {
+        const registeredUser = await this.authService.register(ctx, input);
+        return { data: registeredUser, meta: {} };
+    }
+    async registerLocalD(ctx, input) {
+        const registeredUser = await this.authService.register(ctx, input);
+        return { data: registeredUser, meta: {} };
+    }
+    async registerLocalA(ctx, input) {
         const registeredUser = await this.authService.register(ctx, input);
         return { data: registeredUser, meta: {} };
     }
@@ -74,7 +82,7 @@ __decorate([
     __metadata("design:returntype", base_api_response_dto_1.BaseApiResponse)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('register'),
+    (0, common_1.Post)('register/patient'),
     (0, swagger_1.ApiOperation)({
         summary: 'User registration API',
     }),
@@ -86,9 +94,41 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
-        auth_register_input_dto_1.RegisterInput]),
+        auth_register_input_dto_1.patientRegister]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "registerLocal", null);
+], AuthController.prototype, "registerLocalP", null);
+__decorate([
+    (0, common_1.Post)('register/doctor'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'User registration API',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.CREATED,
+        type: (0, base_api_response_dto_1.SwaggerBaseApiResponse)(auth_register_output_dto_1.RegisterOutput),
+    }),
+    __param(0, (0, req_context_decorator_1.ReqContext)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
+        auth_register_input_dto_1.DoctorRegister]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "registerLocalD", null);
+__decorate([
+    (0, common_1.Post)('register/admin'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'User registration API',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.CREATED,
+        type: (0, base_api_response_dto_1.SwaggerBaseApiResponse)(auth_register_output_dto_1.RegisterOutput),
+    }),
+    __param(0, (0, req_context_decorator_1.ReqContext)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
+        auth_register_input_dto_1.AdminRegister]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "registerLocalA", null);
 __decorate([
     (0, common_1.Post)('refresh-token'),
     (0, swagger_1.ApiOperation)({

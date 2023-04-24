@@ -12,4 +12,9 @@ export class LoginInput {
   @ApiProperty()
   @IsString()
   password: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsString()
+  role: string;
 }

@@ -37,7 +37,7 @@ AuthModule = __decorate([
                 }),
                 inject: [config_1.ConfigService],
             }),
-            user_module_1.UserModule,
+            user_module_1.UserModule
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_auth_strategy_1.JwtAuthStrategy, jwt_refresh_strategy_1.JwtRefreshStrategy],

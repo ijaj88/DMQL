@@ -17,11 +17,13 @@ const jwt_1 = require("@nestjs/jwt");
 const class_transformer_1 = require("class-transformer");
 const logger_service_1 = require("../../shared/logger/logger.service");
 const user_service_1 = require("../../user/services/user.service");
-const auth_register_output_dto_1 = require("../dtos/auth-register-output.dto");
+const role_constant_1 = require("../constants/role.constant");
+const doctor_service_1 = require("../../user/services/doctor.service");
 const auth_token_output_dto_1 = require("../dtos/auth-token-output.dto");
 let AuthService = AuthService_1 = class AuthService {
-    constructor(userService, jwtService, configService, logger) {
+    constructor(userService, DoctorService, jwtService, configService, logger) {
         this.userService = userService;
+        this.DoctorService = DoctorService;
         this.jwtService = jwtService;
         this.configService = configService;
         this.logger = logger;
@@ -30,10 +32,8 @@ let AuthService = AuthService_1 = class AuthService {
     async validateUser(ctx, email, pass) {
         this.logger.log(ctx, `${this.validateUser.name} was called`);
         const user = await this.userService.validateUsernamePassword(ctx, email, pass);
-        if (user.isAccountDisabled) {
-            throw new common_1.UnauthorizedException('This user account has been disabled');
-        }
         return user;
+        return;
     }
     login(ctx) {
         this.logger.log(ctx, `${this.login.name} was called`);
@@ -46,10 +46,18 @@ let AuthService = AuthService_1 = class AuthService {
         if (user) {
             throw new common_1.BadRequestException('User with the email already exists');
         }
+        if (input.TYPE === 'PATIENT') {
+            input.roles = [role_constant_1.ROLE.PATIENT];
+        }
+        if (input.TYPE === 'DOCTOR') {
+            input.roles = [role_constant_1.ROLE.DOCTOR];
+        }
+        if (input.TYPE === 'ADMIN') {
+            input.roles = [role_constant_1.ROLE.ADMIN];
+        }
+        console.log(input);
         const registeredUser = await this.userService.createUser(ctx, Object.assign(Object.assign({}, input), { email: input.username + '@buffalo.edu' }));
-        return (0, class_transformer_1.plainToClass)(auth_register_output_dto_1.RegisterOutput, registeredUser, {
-            excludeExtraneousValues: true,
-        });
+        return registeredUser;
     }
     async refreshToken(ctx) {
         this.logger.log(ctx, `${this.refreshToken.name} was called`);
@@ -81,6 +89,7 @@ let AuthService = AuthService_1 = class AuthService {
 AuthService = AuthService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_service_1.UserService,
+        doctor_service_1.DoctorService,
         jwt_1.JwtService,
         config_1.ConfigService,
         logger_service_1.AppLogger])

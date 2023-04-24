@@ -11,12 +11,26 @@ import { UserOutput } from '../dtos/user-output.dto';
 import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
 import { User } from '../entities/users.entity';
 import { UserRepository } from '../repositories/user.repository';
+import {patientRegister} from 'src/auth/dtos/auth-register-input.dto';
+import { patient } from '../entities/patient.entity';
+import { PatientRepository } from '../repositories/patient.repository';
+import { Doctor } from '../entities/doctor.entity';
+import { DoctorRepository } from '../repositories/doctor.repository';
+import { AdminRepository } from '../repositories/admin.repository';
+import { Admin } from '../entities/admin.entity';
+import { AppoitmentRepository} from '../repositories/appointment.repository'
+import { Appointment } from '../entities/appointment.entity';
+
 
 @Injectable()
 export class UserService {
   constructor(
     private repository: UserRepository,
     private readonly logger: AppLogger,
+    private readonly patientRepository: PatientRepository,
+    private readonly doctorRepository: DoctorRepository,
+    private readonly adminRepository: AdminRepository,
+    private readonly appointmentRepository: AppoitmentRepository,
 
   ) {
     this.logger.setContext(UserService.name);
@@ -26,15 +40,40 @@ export class UserService {
     input: CreateUserInput,
   ): Promise<UserOutput> {
     this.logger.log(ctx, `${this.createUser.name} was called`);
+    console.log(input);
+
     const user = plainToClass(User, input);
 
     user.password = await hash(input.password, 10);
+    
+    const savedUser = await this.repository.save(user);
+    var a=savedUser.roles[0]
 
+    if(a==='PATIENT'){
+    const userpatient = plainToClass(patient, input);
+    userpatient.user=savedUser
 
+    console.log(userpatient,input);
+    const retpat=await this.patientRepository.save(userpatient);
+    }
+
+    if(a==='DOCTOR'){
+      const userpatient = plainToClass(Doctor, input);
+      userpatient.user=savedUser
+  
+      console.log(userpatient,input);
+      const retpat=await this.doctorRepository.save(userpatient);
+    }
+    if(a==='ADMIN'){
+      const userpatient = plainToClass(Admin, input);
+      userpatient.user=savedUser
+  
+      console.log(userpatient,input);
+      const retpat=await this.adminRepository.save(userpatient);
+    }
 
     this.logger.log(ctx, `calling ${UserRepository.name}.saveUser`);
 
-    const savedUser = await this.repository.save(user);
     return plainToClass(UserOutput, user, {
       excludeExtraneousValues: true,
     });
@@ -214,4 +253,21 @@ export class UserService {
       excludeExtraneousValues: true,
     });
   }
+
+  async Book
+    (ctx: RequestContext, input: number) 
+   {
+    const user = await this.doctorRepository.findOne({ where: { id:input } });
+    const appoint:Appointment=null
+
+    appoint.doctor = user
+    const pat = await this.patientRepository.findOne({ where: { id:ctx.user.id}});
+    appoint.patients =pat
+
+    await this.appointmentRepository.save(appoint)
+
+
+
+
+   }
 }

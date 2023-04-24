@@ -26,6 +26,7 @@ import { AuthTokenOutput } from '../dtos/auth-token-output.dto';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { AuthService } from '../services/auth.service';
+import {patientRegister,AdminRegister,DoctorRegister} from '../dtos/auth-register-input.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -58,12 +59,12 @@ export class AuthController {
   ): BaseApiResponse<AuthTokenOutput> {
     this.logger.log(ctx, `${this.login.name} was called`);
 
-    console.log(ctx.user.username, 'ctx.user.username');
+    console.log(ctx.user.username, 'ctx.user.username',credential);
     const authToken = this.authService.login(ctx);
     return { data: authToken, meta: {} };
   }
 
-  @Post('register')
+  @Post('register/patient')
   @ApiOperation({
     summary: 'User registration API',
   })
@@ -71,13 +72,45 @@ export class AuthController {
     status: HttpStatus.CREATED,
     type: SwaggerBaseApiResponse(RegisterOutput),
   })
-  async registerLocal(
+  async registerLocalP(
     @ReqContext() ctx: RequestContext,
-    @Body() input: RegisterInput,
+    @Body() input: patientRegister,
   ): Promise<BaseApiResponse<RegisterOutput>> {
     const registeredUser = await this.authService.register(ctx, input);
     return { data: registeredUser, meta: {} };
   }
+  @Post('register/doctor')
+  @ApiOperation({
+    summary: 'User registration API',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: SwaggerBaseApiResponse(RegisterOutput),
+  })
+  async registerLocalD(
+    @ReqContext() ctx: RequestContext,
+    @Body() input: DoctorRegister,
+  ): Promise<BaseApiResponse<RegisterOutput>> {
+    const registeredUser = await this.authService.register(ctx, input);
+    return { data: registeredUser, meta: {} };
+  }
+  @Post('register/admin')
+  @ApiOperation({
+    summary: 'User registration API',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: SwaggerBaseApiResponse(RegisterOutput),
+  })
+  async registerLocalA(
+    @ReqContext() ctx: RequestContext,
+    @Body() input: AdminRegister,
+  ): Promise<BaseApiResponse<RegisterOutput>> {
+    const registeredUser = await this.authService.register(ctx, input);
+    return { data: registeredUser, meta: {} };
+  }
+
+
 
   @Post('refresh-token')
   @ApiOperation({
