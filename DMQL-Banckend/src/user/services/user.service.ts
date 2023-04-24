@@ -258,14 +258,21 @@ export class UserService {
     (ctx: RequestContext, input: number) 
    {
     const user = await this.doctorRepository.findOne({ where: { id:input } });
-    const appoint:Appointment=null
+    console.log(user,input);
+    const appoint = new Appointment();
 
     appoint.doctor = user
-    const pat = await this.patientRepository.findOne({ where: { id:ctx.user.id}});
-    appoint.patients =pat
+    const userid = await this.repository.findOne({ where: { id:ctx.user.id},
+    relations: {patients:true} });
+
+    const patientIds = userid.patients.map(patient => patient.id);
+    var aa= patientIds[0]
+    console.log(patientIds);
+
+    const pat = await this.patientRepository.findOne({ where: { id: aa } });
+    appoint.patients = pat;
 
     await this.appointmentRepository.save(appoint)
-
 
 
 

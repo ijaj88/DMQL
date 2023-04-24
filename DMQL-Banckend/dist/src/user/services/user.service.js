@@ -26,6 +26,7 @@ const doctor_repository_1 = require("../repositories/doctor.repository");
 const admin_repository_1 = require("../repositories/admin.repository");
 const admin_entity_1 = require("../entities/admin.entity");
 const appointment_repository_1 = require("../repositories/appointment.repository");
+const appointment_entity_1 = require("../entities/appointment.entity");
 let UserService = UserService_1 = class UserService {
     constructor(repository, logger, patientRepository, doctorRepository, adminRepository, appointmentRepository) {
         this.repository = repository;
@@ -171,9 +172,15 @@ let UserService = UserService_1 = class UserService {
     }
     async Book(ctx, input) {
         const user = await this.doctorRepository.findOne({ where: { id: input } });
-        const appoint = null;
+        console.log(user, input);
+        const appoint = new appointment_entity_1.Appointment();
         appoint.doctor = user;
-        const pat = await this.patientRepository.findOne({ where: { id: ctx.user.id } });
+        const userid = await this.repository.findOne({ where: { id: ctx.user.id },
+            relations: { patients: true } });
+        const patientIds = userid.patients.map(patient => patient.id);
+        var aa = patientIds[0];
+        console.log(patientIds);
+        const pat = await this.patientRepository.findOne({ where: { id: aa } });
         appoint.patients = pat;
         await this.appointmentRepository.save(appoint);
     }
