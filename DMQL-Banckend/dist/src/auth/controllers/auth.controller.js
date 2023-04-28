@@ -38,7 +38,8 @@ let AuthController = AuthController_1 = class AuthController {
         this.logger.log(ctx, `${this.login.name} was called`);
         console.log(ctx.user.username, 'ctx.user.username', credential);
         const authToken = this.authService.login(ctx);
-        return { data: authToken, meta: {} };
+        const userid = ctx.user.id;
+        return { data: { authToken, userid }, meta: {} };
     }
     async registerLocalP(ctx, input) {
         const registeredUser = await this.authService.register(ctx, input);

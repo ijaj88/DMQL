@@ -11,7 +11,7 @@ export declare class AuthController {
     private readonly authService;
     private readonly logger;
     constructor(authService: AuthService, logger: AppLogger);
-    login(ctx: RequestContext, credential: LoginInput): BaseApiResponse<AuthTokenOutput>;
+    login(ctx: RequestContext, credential: LoginInput): BaseApiResponse<any>;
     registerLocalP(ctx: RequestContext, input: patientRegister): Promise<BaseApiResponse<RegisterOutput>>;
     registerLocalD(ctx: RequestContext, input: DoctorRegister): Promise<BaseApiResponse<RegisterOutput>>;
     registerLocalA(ctx: RequestContext, input: AdminRegister): Promise<BaseApiResponse<RegisterOutput>>;

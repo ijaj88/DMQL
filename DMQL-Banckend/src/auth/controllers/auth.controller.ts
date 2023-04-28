@@ -56,12 +56,13 @@ export class AuthController {
     @ReqContext() ctx: RequestContext,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() credential: LoginInput,
-  ): BaseApiResponse<AuthTokenOutput> {
+  ): BaseApiResponse<any> {
     this.logger.log(ctx, `${this.login.name} was called`);
 
     console.log(ctx.user.username, 'ctx.user.username',credential);
     const authToken = this.authService.login(ctx);
-    return { data: authToken, meta: {} };
+    const userid=ctx.user.id
+    return { data: {authToken,userid}, meta: {} };
   }
 
   @Post('register/patient')
