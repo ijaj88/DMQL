@@ -44,6 +44,9 @@ import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/user.service';
 import { PatientAppointmentsDto} from '../dtos/user-appointment.dto'
+import { DoctOutput } from '../dtos/doctor-output.dto';
+
+import {BookingInput} from '../dtos/user-booking-input.dto'
 
 @ApiTags('users')
 @Controller('users/patient')
@@ -91,8 +94,8 @@ export class UserController {
     status: HttpStatus.UNAUTHORIZED,
     type: BaseApiErrorResponse,
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.ADMIN, ROLE.USER)
+  //@UseGuards(JwtAuthGuard, RolesGuard)
+  //@Roles(ROLE.ADMIN, ROLE.USER)
   async getUsers(
     @ReqContext() ctx: RequestContext,
     @Query() query: PaginationParamsDto,
@@ -136,6 +139,7 @@ export class UserController {
     const user = await this.userService.getUserById(ctx, id);
     return { data: user, meta: {} };
   }
+/*
 
   @Post('upload')
   @ApiConsumes('multipart/form-data')
@@ -160,7 +164,7 @@ export class UserController {
       file.buffer.toString(),
     );
   }
-
+*/
   // TODO: ADD RoleGuard
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -186,7 +190,7 @@ export class UserController {
     const user = await this.userService.updateUser(ctx, ctx.user.id, input);
     return { data: user, meta: {} };
   }
-
+/*
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Patch('role')
@@ -211,12 +215,12 @@ export class UserController {
     const user = await this.userService.updateRole(ctx, input);
     return { data: user, meta: {} };
   }
+*/
 
-
-  @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
-  @Post('bookappoitmnet/:id')
+  @Post('bookappoitmnet/:availableid')
   @ApiOperation({
     summary: 'Booking API',
   })
@@ -225,10 +229,12 @@ export class UserController {
     //type: SwaggerBaseApiResponse(EventOutput),
   })
   async createEvent(
-    @Param('id') id: number,
+    @Param('availableid') id: number,
     @ReqContext() ctx: RequestContext,
+    @Body() input: BookingInput
   ) {
-    const createdEvent = await this.userService.Book(ctx, id);
+    console.log(input,id)
+      const createdEvent = await this.userService.Book(ctx, id,input);
     return { data: createdEvent, meta: {} };
   }
 

@@ -27,14 +27,16 @@ const admin_repository_1 = require("../repositories/admin.repository");
 const admin_entity_1 = require("../entities/admin.entity");
 const appointment_repository_1 = require("../repositories/appointment.repository");
 const appointment_entity_1 = require("../entities/appointment.entity");
+const doctor_schedule_repository_1 = require("../repositories/doctor.schedule.repository");
 let UserService = UserService_1 = class UserService {
-    constructor(repository, logger, patientRepository, doctorRepository, adminRepository, appointmentRepository) {
+    constructor(repository, logger, patientRepository, doctorRepository, adminRepository, appointmentRepository, DoctorDutyRepository) {
         this.repository = repository;
         this.logger = logger;
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
         this.adminRepository = adminRepository;
         this.appointmentRepository = appointmentRepository;
+        this.DoctorDutyRepository = DoctorDutyRepository;
         this.logger.setContext(UserService_1.name);
     }
     async createUser(ctx, input) {
@@ -170,8 +172,17 @@ let UserService = UserService_1 = class UserService {
             excludeExtraneousValues: true,
         });
     }
-    async Book(ctx, input) {
-        const user = await this.doctorRepository.findOne({ where: { id: input } });
+    async Book(ctx, id, input) {
+        const bookduty = await this.DoctorDutyRepository.findOne({ where: { id: id } });
+        console.log(bookduty, id);
+        if (bookduty[`slot${input.slotnumbder}`] === false) {
+            bookduty[`slot${input.slotnumbder}`] = true;
+            await this.DoctorDutyRepository.save(bookduty);
+        }
+        else {
+            throw new Error("Aldeary booked");
+        }
+        const user = await this.doctorRepository.findOne({ where: { id: bookduty.doctorId } });
         console.log(user, input);
         const appoint = new appointment_entity_1.Appointment();
         appoint.doctor = user;
@@ -182,7 +193,10 @@ let UserService = UserService_1 = class UserService {
         console.log(patientIds);
         const pat = await this.patientRepository.findOne({ where: { id: aa } });
         appoint.patients = pat;
-        await this.appointmentRepository.save(appoint);
+        appoint.BookingFor = bookduty.dutyDate;
+        appoint.slotnumbder = input.slotnumbder;
+        const book = await this.appointmentRepository.save(appoint);
+        return { book, message: "Appointment Book" };
     }
 };
 UserService = UserService_1 = __decorate([
@@ -192,7 +206,8 @@ UserService = UserService_1 = __decorate([
         patient_repository_1.PatientRepository,
         doctor_repository_1.DoctorRepository,
         admin_repository_1.AdminRepository,
-        appointment_repository_1.AppoitmentRepository])
+        appointment_repository_1.AppoitmentRepository,
+        doctor_schedule_repository_1.DoctorDutyRepository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

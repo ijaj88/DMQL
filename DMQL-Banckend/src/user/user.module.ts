@@ -15,13 +15,14 @@ import { AdminRepository } from './repositories/admin.repository';
 import { DoctorService } from './services/doctor.service';
 import { PatientRepository } from './repositories/patient.repository';
 import { AppoitmentRepository} from './repositories/appointment.repository'
+import {QueryRepository } from './repositories/query.repository'
 @Module({
   imports: [SharedModule, TypeOrmModule.forFeature([User])],
   providers: [UserService, JwtAuthStrategy, UserAclService,
      UserRepository,DoctorService,
-    DoctorRepository,DoctorDutyRepository,AdminRepository,
+    DoctorRepository,DoctorDutyRepository,AdminRepository,QueryRepository,
     PatientRepository,AppoitmentRepository],
   controllers: [UserController,DoctorController],
-  exports: [UserService,DoctorService,DoctorRepository,DoctorDutyRepository],
+  exports: [UserService,DoctorService,DoctorRepository,DoctorDutyRepository,QueryRepository],
 })
 export class UserModule {}

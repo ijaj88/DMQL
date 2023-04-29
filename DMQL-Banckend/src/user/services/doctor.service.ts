@@ -12,6 +12,12 @@ import { User } from '../entities/users.entity';
 import { UserRepository } from '../repositories/user.repository';
 import { Doctor } from '../entities/doctor.entity';
 import { DoctorRepository } from '../repositories/doctor.repository';
+import { DoctOutput } from '../dtos/doctor-output.dto';
+import { EntityManager } from 'typeorm';
+
+import { QueryBook } from '../entities/querystat.entity'
+import { QueryRepository } from '../repositories/query.repository'
+import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
 
 @Injectable()
 export class DoctorService {
@@ -19,6 +25,10 @@ export class DoctorService {
     private repository: UserRepository,
     private readonly logger: AppLogger,
     private readonly doctorRepository: DoctorRepository,
+    private readonly entityManager: EntityManager,
+    private readonly QueryRepository: QueryRepository,
+    private readonly DoctorDutyRepository:DoctorDutyRepository
+
 
   ) {
     this.logger.setContext(DoctorService.name);
@@ -44,6 +54,83 @@ export class DoctorService {
 
     return user;
   }
+
+  async getUsers(
+    ctx: RequestContext,
+    limit: number,
+    offset: number,
+  ): Promise<{ users: DoctOutput[]; count: number }> {
+    this.logger.log(ctx, `${this.getUsers.name} was called`);
+
+    this.logger.log(ctx, `calling ${UserRepository.name}.findAndCount`);
+    const [users, count] = await this.doctorRepository.findAndCount({
+      where: {},
+      take: limit,
+      skip: offset,
+    });
+
+    const usersOutput = plainToClass(DoctOutput, users, {
+      excludeExtraneousValues: true,
+    });
+
+    return { users: usersOutput, count };
+  }
+
+  async findById(ctx: RequestContext, id: number): Promise<DoctOutput> {
+    this.logger.log(ctx, `${this.findById.name} was called`);
+
+    this.logger.log(ctx, `calling ${UserRepository.name}.findOne`);
+
+    const user = await this.doctorRepository.findOne({
+      where: { id },
+     // relations: { affiliation_to_user: true },
+    });
+
+    
+   // user.affilation = affilationObj
+
+    return user;
+  }
+  async GetSlots(ctx: RequestContext, id: number) {
+
+
+    //const query = `SELECT id, CONCAT_WS(', ', CASE WHEN NOT slot4 THEN '4' ELSE NULL END, CASE WHEN NOT slot3 THEN '3' ELSE NULL END) AS availableSlots FROM "public"."DoctorDuty" as DD WHERE DD.id = :doctorId;`
+    const params = {age: 26, userId: 6,doctorId:id};
+    //const query1 = `SELECT * FROM public.doctor where doctor.age = :age and doctor.sex > ':userId'`;
+    const query = await this.QueryRepository.findOne({where:{id:1}})
+
+
+    const rs = await this.buildQ(query.queries, params);
+    const result = await this.entityManager.query(rs);
+    return result;
+  }
+
+
+  async GeneralQuery( id: number) {
+
+
+    
+    const query = await this.QueryRepository.findOne({where:{id}})
+
+
+    const result = await this.entityManager.query(query.queries);
+    return result;
+  }
+  
+  async buildQ(queryString: string, params: { [key: string]: any }) {
+    let replacedQuery = queryString;
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const value = params[key];
+        replacedQuery = replacedQuery.replace(`:${key}`, value);
+      }
+    }
+    console.log(replacedQuery);
+    return replacedQuery;
+  }
+  
+
+
 /*
   async validateUsernamePassword(
     ctx: RequestContext,

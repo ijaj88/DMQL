@@ -15,21 +15,17 @@ var UserController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
-const role_constant_1 = require("../../auth/constants/role.constant");
-const role_decorator_1 = require("../../auth/decorators/role.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
-const roles_guard_1 = require("../../auth/guards/roles.guard");
 const base_api_response_dto_1 = require("../../shared/dtos/base-api-response.dto");
 const pagination_params_dto_1 = require("../../shared/dtos/pagination-params.dto");
 const logger_service_1 = require("../../shared/logger/logger.service");
 const req_context_decorator_1 = require("../../shared/request-context/req-context.decorator");
 const request_context_dto_1 = require("../../shared/request-context/request-context.dto");
-const csv_upload_dto_1 = require("../dtos/csv-upload.dto");
 const user_output_dto_1 = require("../dtos/user-output.dto");
 const user_update_input_dto_1 = require("../dtos/user-update-input.dto");
 const user_service_1 = require("../services/user.service");
+const user_booking_input_dto_1 = require("../dtos/user-booking-input.dto");
 let UserController = UserController_1 = class UserController {
     constructor(userService, logger) {
         this.userService = userService;
@@ -51,21 +47,14 @@ let UserController = UserController_1 = class UserController {
         const user = await this.userService.getUserById(ctx, id);
         return { data: user, meta: {} };
     }
-    async uploadFile(input, ctx, file) {
-        await this.userService.parseAndUpdateUserInformation(ctx, file.buffer.toString());
-    }
     async updateUser(ctx, input) {
         this.logger.log(ctx, `${this.updateUser.name} was called`);
         const user = await this.userService.updateUser(ctx, ctx.user.id, input);
         return { data: user, meta: {} };
     }
-    async updateRole(ctx, input) {
-        this.logger.log(ctx, `${this.updateUser.name} was called`);
-        const user = await this.userService.updateRole(ctx, input);
-        return { data: user, meta: {} };
-    }
-    async createEvent(id, ctx) {
-        const createdEvent = await this.userService.Book(ctx, id);
+    async createEvent(id, ctx, input) {
+        console.log(input, id);
+        const createdEvent = await this.userService.Book(ctx, id, input);
         return { data: createdEvent, meta: {} };
     }
 };
@@ -104,8 +93,6 @@ __decorate([
         status: common_1.HttpStatus.UNAUTHORIZED,
         type: base_api_response_dto_1.BaseApiErrorResponse,
     }),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, role_decorator_1.Roles)(role_constant_1.ROLE.ADMIN, role_constant_1.ROLE.USER),
     __param(0, (0, req_context_decorator_1.ReqContext)()),
     __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -138,25 +125,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
 __decorate([
-    (0, common_1.Post)('upload'),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, swagger_1.ApiBearerAuth)(),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, req_context_decorator_1.ReqContext)()),
-    __param(2, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
-        validators: [
-            new common_1.MaxFileSizeValidator({ maxSize: 100000 }),
-            new common_1.FileTypeValidator({ fileType: 'text/csv' }),
-        ],
-    }))),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [csv_upload_dto_1.CSVUploadDto,
-        request_context_dto_1.RequestContext, Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "uploadFile", null);
-__decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Patch)(),
@@ -182,41 +150,20 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.Patch)('role'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Update user API',
-    }),
-    (0, swagger_1.ApiResponse)({
-        status: common_1.HttpStatus.OK,
-        type: (0, base_api_response_dto_1.SwaggerBaseApiResponse)(user_output_dto_1.UserOutput),
-    }),
-    (0, swagger_1.ApiResponse)({
-        status: common_1.HttpStatus.NOT_FOUND,
-        type: base_api_response_dto_1.BaseApiErrorResponse,
-    }),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
-    __param(0, (0, req_context_decorator_1.ReqContext)()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [request_context_dto_1.RequestContext,
-        user_update_input_dto_1.UpdateRoleDto]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "updateRole", null);
-__decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
-    (0, common_1.Post)('bookappoitmnet/:id'),
+    (0, common_1.Post)('bookappoitmnet/:availableid'),
     (0, swagger_1.ApiOperation)({
         summary: 'Booking API',
     }),
     (0, swagger_1.ApiResponse)({
         status: common_1.HttpStatus.CREATED,
     }),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('availableid')),
     __param(1, (0, req_context_decorator_1.ReqContext)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, request_context_dto_1.RequestContext]),
+    __metadata("design:paramtypes", [Number, request_context_dto_1.RequestContext,
+        user_booking_input_dto_1.BookingInput]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createEvent", null);
 UserController = UserController_1 = __decorate([

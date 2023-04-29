@@ -20,6 +20,9 @@ import { AdminRepository } from '../repositories/admin.repository';
 import { Admin } from '../entities/admin.entity';
 import { AppoitmentRepository} from '../repositories/appointment.repository'
 import { Appointment } from '../entities/appointment.entity';
+import {BookingInput} from '../dtos/user-booking-input.dto'
+import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
+
 
 
 @Injectable()
@@ -31,6 +34,7 @@ export class UserService {
     private readonly doctorRepository: DoctorRepository,
     private readonly adminRepository: AdminRepository,
     private readonly appointmentRepository: AppoitmentRepository,
+    private readonly DoctorDutyRepository:DoctorDutyRepository
 
   ) {
     this.logger.setContext(UserService.name);
@@ -255,9 +259,27 @@ export class UserService {
   }
 
   async Book
-    (ctx: RequestContext, input: number) 
+    (ctx: RequestContext, id: number,input:BookingInput ) 
    {
-    const user = await this.doctorRepository.findOne({ where: { id:input } });
+
+
+    const bookduty = await this.DoctorDutyRepository.findOne({where: {id:id}})
+    console.log(bookduty,id)
+
+
+    if(bookduty[`slot${input.slotnumbder}`] === false)
+    {
+    bookduty[`slot${input.slotnumbder}`] = true; // Set the selected slot to true
+      
+    await this.DoctorDutyRepository.save(bookduty); // Save the changes to the database
+    }
+    else
+    {
+      throw new Error("Aldeary booked")
+    }
+    
+
+    const user = await this.doctorRepository.findOne({ where: { id:bookduty.doctorId } });
     console.log(user,input);
     const appoint = new Appointment();
 
@@ -271,9 +293,12 @@ export class UserService {
 
     const pat = await this.patientRepository.findOne({ where: { id: aa } });
     appoint.patients = pat;
+    appoint.BookingFor = bookduty.dutyDate
+    appoint.slotnumbder=input.slotnumbder
 
-    await this.appointmentRepository.save(appoint)
-
+    const book=await this.appointmentRepository.save(appoint)
+    return {book,message: "Appointment Book"}
+    
 
 
    }

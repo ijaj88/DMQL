@@ -43,12 +43,16 @@ import {
   import { UpdateRoleDto, UpdateUserInput } from '../dtos/user-update-input.dto';
   import { User } from '../entities/users.entity';
   import { UserService } from '../services/user.service';
+  import { DoctorService } from '../services/doctor.service';
+  import { Doctor } from '../entities/doctor.entity';
+  import { DoctOutput } from '../dtos/doctor-output.dto';
   
   @ApiTags('users')
   @Controller('users/doctor')
   export class DoctorController {
     constructor(
       private readonly userService: UserService,
+      private readonly DoctorService:DoctorService,
       private readonly logger: AppLogger,
     ) {
       this.logger.setContext(DoctorController.name);
@@ -70,10 +74,10 @@ import {
     })
     async getMyProfile(
       @ReqContext() ctx: RequestContext,
-    ): Promise<BaseApiResponse<User>> {
+    ): Promise<BaseApiResponse<DoctOutput>> {
       this.logger.log(ctx, `${this.getMyProfile.name} was called`);
   
-      const user = await this.userService.findById(ctx, ctx.user.id);
+      const user = await this.DoctorService.findById(ctx, ctx.user.id);
       return { data: user, meta: {} };
     }
   
@@ -90,19 +94,20 @@ import {
       status: HttpStatus.UNAUTHORIZED,
       type: BaseApiErrorResponse,
     })
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(ROLE.ADMIN, ROLE.USER)
+    //@UseGuards(JwtAuthGuard, RolesGuard)
+    //@Roles(ROLE.ADMIN, ROLE.USER)
     async getUsers(
       @ReqContext() ctx: RequestContext,
       @Query() query: PaginationParamsDto,
-    ): Promise<BaseApiResponse<UserOutput[]>> {
+    ): Promise<BaseApiResponse<DoctOutput[]>> {
       this.logger.log(ctx, `${this.getUsers.name} was called`);
   
-      const { users, count } = await this.userService.getUsers(
+      const { users, count } = await this.DoctorService.getUsers(
         ctx,
         query.limit,
         query.offset,
       );
+      console.log(users)
   
       return { data: users, meta: { count } };
     }
@@ -129,36 +134,14 @@ import {
     async getUser(
       @ReqContext() ctx: RequestContext,
       @Param('id') id: number,
-    ): Promise<BaseApiResponse<UserOutput>> {
+    ): Promise<BaseApiResponse<DoctOutput>> {
       this.logger.log(ctx, `${this.getUser.name} was called`);
   
-      const user = await this.userService.getUserById(ctx, id);
+      const user = await this.DoctorService.findById(ctx, id);
       return { data: user, meta: {} };
     }
   
-    @Post('upload')
-    @ApiConsumes('multipart/form-data')
-    @UseInterceptors(FileInterceptor('file'))
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
-    async uploadFile(
-      @Body() input: CSVUploadDto,
-      @ReqContext() ctx: RequestContext,
-      @UploadedFile(
-        new ParseFilePipe({
-          validators: [
-            new MaxFileSizeValidator({ maxSize: 100000 }),
-            new FileTypeValidator({ fileType: 'text/csv' }),
-          ],
-        }),
-      )
-      file: Express.Multer.File,
-    ) {
-      await this.userService.parseAndUpdateUserInformation(
-        ctx,
-        file.buffer.toString(),
-      );
-    }
+
   
     // TODO: ADD RoleGuard
     @UseGuards(JwtAuthGuard)
@@ -185,7 +168,7 @@ import {
       const user = await this.userService.updateUser(ctx, ctx.user.id, input);
       return { data: user, meta: {} };
     }
-  
+  /*
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @Patch('role')
@@ -208,6 +191,60 @@ import {
       this.logger.log(ctx, `${this.updateUser.name} was called`);
   
       const user = await this.userService.updateRole(ctx, input);
+      return { data: user, meta: {} };
+    }
+*/
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('Availabilty/:doctorId')
+    @ApiOperation({
+      summary: 'Get doctor slots by id API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse(UserOutput),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      type: BaseApiErrorResponse,
+    })
+    async geDoctorSlots(
+      @ReqContext() ctx: RequestContext,
+      @Param('doctorId') id: number,
+    ): Promise<BaseApiResponse<any>> {
+      this.logger.log(ctx, `${this.getUser.name} was called`);
+  
+      const user = await this.DoctorService.GetSlots(ctx, id);
+      return { data: user, meta: {} };
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('QueryMaster/:id')
+    @ApiOperation({
+      summary: 'Get doctor slots by id API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse(UserOutput),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      type: BaseApiErrorResponse,
+    })
+    async MasterQueries(
+      @ReqContext() ctx: RequestContext,
+      @Param('id') id: number,
+    ): Promise<BaseApiResponse<any>> {
+      this.logger.log(ctx, `${this.getUser.name} was called`);
+  
+      const user = await this.DoctorService.GeneralQuery(id);
       return { data: user, meta: {} };
     }
   }

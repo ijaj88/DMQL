@@ -23,6 +23,7 @@ const admin_repository_1 = require("./repositories/admin.repository");
 const doctor_service_1 = require("./services/doctor.service");
 const patient_repository_1 = require("./repositories/patient.repository");
 const appointment_repository_1 = require("./repositories/appointment.repository");
+const query_repository_1 = require("./repositories/query.repository");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
@@ -30,10 +31,10 @@ UserModule = __decorate([
         imports: [shared_module_1.SharedModule, typeorm_1.TypeOrmModule.forFeature([users_entity_1.User])],
         providers: [user_service_1.UserService, jwt_auth_strategy_1.JwtAuthStrategy, user_acl_service_1.UserAclService,
             user_repository_1.UserRepository, doctor_service_1.DoctorService,
-            doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, admin_repository_1.AdminRepository,
+            doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, admin_repository_1.AdminRepository, query_repository_1.QueryRepository,
             patient_repository_1.PatientRepository, appointment_repository_1.AppoitmentRepository],
         controllers: [user_controller_1.UserController, doctor_controller_1.DoctorController],
-        exports: [user_service_1.UserService, doctor_service_1.DoctorService, doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository],
+        exports: [user_service_1.UserService, doctor_service_1.DoctorService, doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, query_repository_1.QueryRepository],
     })
 ], UserModule);
 exports.UserModule = UserModule;

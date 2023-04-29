@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], DoctorDuty.prototype, "slot7", void 0);
 DoctorDuty = __decorate([
-    (0, typeorm_1.Entity)('DoctorDuty')
+    (0, typeorm_1.Entity)('doctorduty')
 ], DoctorDuty);
 exports.DoctorDuty = DoctorDuty;
 //# sourceMappingURL=doctor.schedule.entity.js.map

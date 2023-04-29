@@ -9,6 +9,9 @@ import { PatientRepository } from '../repositories/patient.repository';
 import { DoctorRepository } from '../repositories/doctor.repository';
 import { AdminRepository } from '../repositories/admin.repository';
 import { AppoitmentRepository } from '../repositories/appointment.repository';
+import { Appointment } from '../entities/appointment.entity';
+import { BookingInput } from '../dtos/user-booking-input.dto';
+import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
 export declare class UserService {
     private repository;
     private readonly logger;
@@ -16,7 +19,8 @@ export declare class UserService {
     private readonly doctorRepository;
     private readonly adminRepository;
     private readonly appointmentRepository;
-    constructor(repository: UserRepository, logger: AppLogger, patientRepository: PatientRepository, doctorRepository: DoctorRepository, adminRepository: AdminRepository, appointmentRepository: AppoitmentRepository);
+    private readonly DoctorDutyRepository;
+    constructor(repository: UserRepository, logger: AppLogger, patientRepository: PatientRepository, doctorRepository: DoctorRepository, adminRepository: AdminRepository, appointmentRepository: AppoitmentRepository, DoctorDutyRepository: DoctorDutyRepository);
     createUser(ctx: RequestContext, input: CreateUserInput): Promise<UserOutput>;
     findByIdInternal(ctx: RequestContext, id: number): Promise<User>;
     validateUsernamePassword(ctx: RequestContext, username: string, pass: string): Promise<UserOutput>;
@@ -31,5 +35,8 @@ export declare class UserService {
     findByUsername(ctx: RequestContext, username: string): Promise<UserOutput>;
     updateUser(ctx: RequestContext, userId: number, input: UpdateUserInput): Promise<UserOutput>;
     updateRole(ctx: RequestContext, input: UpdateRoleDto): Promise<UserOutput>;
-    Book(ctx: RequestContext, input: number): Promise<void>;
+    Book(ctx: RequestContext, id: number, input: BookingInput): Promise<{
+        book: Appointment;
+        message: string;
+    }>;
 }
