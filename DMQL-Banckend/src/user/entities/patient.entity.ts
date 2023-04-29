@@ -44,7 +44,7 @@ import {
     @Column({ nullable: true })
     isAccountDisabled: boolean;
   
-    @Unique('email', ['email'])
+    @Unique('email_p', ['email'])
     @Column({ length: 200, nullable: true })
     email: string;
   

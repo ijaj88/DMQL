@@ -25,7 +25,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Unique)('username', ['username']),
+    (0, typeorm_1.Unique)('username_u', ['username']),
     (0, typeorm_1.Column)({ length: 200 }),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
@@ -38,7 +38,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "isAccountDisabled", void 0);
 __decorate([
-    (0, typeorm_1.Unique)('email', ['email']),
+    (0, typeorm_1.Unique)('email_u', ['email']),
     (0, typeorm_1.Column)({ length: 200, nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);

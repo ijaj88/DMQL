@@ -23,7 +23,7 @@ export class User {
   @Column()
   password: string;
 
-  @Unique('username', ['username'])
+  @Unique('username_u', ['username'])
   @Column({ length: 200 })
   username: string;
 
@@ -33,7 +33,7 @@ export class User {
   @Column({ nullable: true })
   isAccountDisabled: boolean;
 
-  @Unique('email', ['email'])
+  @Unique('email_u', ['email'])
   @Column({ length: 200, nullable: true })
   email: string;
 

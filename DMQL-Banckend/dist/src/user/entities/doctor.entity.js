@@ -40,7 +40,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Doctor.prototype, "age", void 0);
 __decorate([
-    (0, typeorm_1.Unique)('username', ['username']),
+    (0, typeorm_1.Unique)('username_d', ['username']),
     (0, typeorm_1.Column)({ length: 200 }),
     __metadata("design:type", String)
 ], Doctor.prototype, "username", void 0);
@@ -49,7 +49,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Doctor.prototype, "isAccountDisabled", void 0);
 __decorate([
-    (0, typeorm_1.Unique)('email', ['email']),
+    (0, typeorm_1.Unique)('email_d', ['email']),
     (0, typeorm_1.Column)({ length: 200, nullable: true }),
     __metadata("design:type", String)
 ], Doctor.prototype, "email", void 0);

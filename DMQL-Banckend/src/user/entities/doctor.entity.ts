@@ -39,14 +39,14 @@ import {
     @Column({ nullable: true })
     age: number;
   
-    @Unique('username', ['username'])
+    @Unique('username_d', ['username'])
     @Column({ length: 200 })
     username: string;
   
     @Column({ nullable: true })
     isAccountDisabled: boolean;
   
-    @Unique('email', ['email'])
+    @Unique('email_d', ['email'])
     @Column({ length: 200, nullable: true })
     email: string;
   

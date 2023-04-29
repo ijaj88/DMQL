@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], patient.prototype, "isAccountDisabled", void 0);
 __decorate([
-    (0, typeorm_1.Unique)('email', ['email']),
+    (0, typeorm_1.Unique)('email_p', ['email']),
     (0, typeorm_1.Column)({ length: 200, nullable: true }),
     __metadata("design:type", String)
 ], patient.prototype, "email", void 0);

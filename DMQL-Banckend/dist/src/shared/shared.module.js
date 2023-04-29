@@ -25,7 +25,7 @@ SharedModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: async (configService) => ({
-                    type: 'mysql',
+                    type: 'postgres',
                     host: configService.get('database.host'),
                     port: configService.get('database.port'),
                     database: configService.get('database.name'),
