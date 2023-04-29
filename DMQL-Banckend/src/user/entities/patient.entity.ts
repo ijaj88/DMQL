@@ -16,6 +16,11 @@ import {
  import { User } from '../entities/users.entity';
  import { Appointment } from './appointment.entity';
 
+ import {PatientServiceLab} from '../entities/patientservicelab.entity'
+ import {PatientServiceMedicine} from '../entities/patientservicemedicine.entity'
+ import {patienthistory} from '../entities/patienthistory.entity'
+
+
   @Entity('patient')
   export class patient {
     @PrimaryGeneratedColumn()
@@ -59,6 +64,22 @@ import {
     user: User;
 
     @OneToMany(() => Appointment, Appointment => Appointment.patients)
-    appointment: Appointment[]; 
+    appointment: Appointment[];
+
+    @OneToMany(() => PatientServiceLab, PatientServiceLab => PatientServiceLab.patients)
+    labservice: PatientServiceLab[]; 
+
+    @OneToMany(() => PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.patients)
+    medservice: PatientServiceMedicine[]; 
+
+    @OneToMany(() => patienthistory, patienthistory => patienthistory.patients)
+    patientlog: patienthistory[]; 
+
+    
+
+    
+
+    
+    
   }
   

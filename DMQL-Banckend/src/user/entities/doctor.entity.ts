@@ -15,6 +15,8 @@ import {
 
   import { User } from '../entities/users.entity';
   import { Appointment } from './appointment.entity';
+  import {patienthistory} from '../entities/patienthistory.entity'
+
   
   @Entity('doctor')
   export class Doctor {
@@ -62,6 +64,9 @@ import {
 
     @OneToMany(() => Appointment, Appointment => Appointment.doctor)
     appointment: Appointment[]; 
+
+    @OneToMany(() => patienthistory, patienthistory => patienthistory.doctors)
+    patientlog: patienthistory[]; 
   
   }
   

@@ -13,6 +13,9 @@ exports.patient = void 0;
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../entities/users.entity");
 const appointment_entity_1 = require("./appointment.entity");
+const patientservicelab_entity_1 = require("../entities/patientservicelab.entity");
+const patientservicemedicine_entity_1 = require("../entities/patientservicemedicine.entity");
+const patienthistory_entity_1 = require("../entities/patienthistory.entity");
 let patient = class patient {
 };
 __decorate([
@@ -68,6 +71,18 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => appointment_entity_1.Appointment, Appointment => Appointment.patients),
     __metadata("design:type", Array)
 ], patient.prototype, "appointment", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patientservicelab_entity_1.PatientServiceLab, PatientServiceLab => PatientServiceLab.patients),
+    __metadata("design:type", Array)
+], patient.prototype, "labservice", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patientservicemedicine_entity_1.PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.patients),
+    __metadata("design:type", Array)
+], patient.prototype, "medservice", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patienthistory_entity_1.patienthistory, patienthistory => patienthistory.patients),
+    __metadata("design:type", Array)
+], patient.prototype, "patientlog", void 0);
 patient = __decorate([
     (0, typeorm_1.Entity)('patient')
 ], patient);

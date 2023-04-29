@@ -1,5 +1,6 @@
 import { User } from '../entities/users.entity';
 import { Appointment } from './appointment.entity';
+import { patienthistory } from '../entities/patienthistory.entity';
 export declare class Doctor {
     id: number;
     firstname: string;
@@ -14,4 +15,5 @@ export declare class Doctor {
     updatedAt: Date;
     user: User;
     appointment: Appointment[];
+    patientlog: patienthistory[];
 }
