@@ -4,16 +4,15 @@ import { AppLogger } from '../../shared/logger/logger.service';
 import { RequestContext } from '../../shared/request-context/request-context.dto';
 import { UserOutput } from '../dtos/user-output.dto';
 import { UpdateUserInput } from '../dtos/user-update-input.dto';
-import { User } from '../entities/users.entity';
 import { UserService } from '../services/user.service';
 import { BookingInput } from '../dtos/user-booking-input.dto';
 export declare class UserController {
     private readonly userService;
     private readonly logger;
     constructor(userService: UserService, logger: AppLogger);
-    getMyProfile(ctx: RequestContext): Promise<BaseApiResponse<User>>;
-    getUsers(ctx: RequestContext, query: PaginationParamsDto): Promise<BaseApiResponse<UserOutput[]>>;
-    getUser(ctx: RequestContext, id: number): Promise<BaseApiResponse<UserOutput>>;
+    getMyProfile(ctx: RequestContext): Promise<BaseApiResponse<any>>;
+    getUsers(ctx: RequestContext, query: PaginationParamsDto): Promise<BaseApiResponse<any>>;
+    getUser(ctx: RequestContext, id: number): Promise<BaseApiResponse<any>>;
     updateUser(ctx: RequestContext, input: UpdateUserInput): Promise<BaseApiResponse<UserOutput>>;
     createEvent(id: number, ctx: RequestContext, input: BookingInput): Promise<{
         data: {

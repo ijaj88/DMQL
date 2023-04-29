@@ -22,6 +22,7 @@ import { AppoitmentRepository} from '../repositories/appointment.repository'
 import { Appointment } from '../entities/appointment.entity';
 import {BookingInput} from '../dtos/user-booking-input.dto'
 import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
+import { use } from 'passport';
 
 
 
@@ -132,24 +133,24 @@ export class UserService {
     ctx: RequestContext,
     limit: number,
     offset: number,
-  ): Promise<{ users: UserOutput[]; count: number }> {
+  ): Promise<{ users: any; count: number }> {
     this.logger.log(ctx, `${this.getUsers.name} was called`);
 
     this.logger.log(ctx, `calling ${UserRepository.name}.findAndCount`);
-    const [users, count] = await this.repository.findAndCount({
+    const [users, count] = await this.patientRepository.findAndCount({
       where: {},
       take: limit,
       skip: offset,
     });
 
-    const usersOutput = plainToClass(UserOutput, users, {
+    const usersOutput = plainToClass(patient, users, {
       excludeExtraneousValues: true,
     });
 
-    return { users: usersOutput, count };
+    return { users: users, count };
   }
 
-  async findById(ctx: RequestContext, id: number): Promise<User> {
+  async findById(ctx: RequestContext, id: number): Promise<any> {
     this.logger.log(ctx, `${this.findById.name} was called`);
 
     this.logger.log(ctx, `calling ${UserRepository.name}.findOne`);
@@ -158,6 +159,15 @@ export class UserService {
       where: { id },
      // relations: { affiliation_to_user: true },
     });
+    const userid = await this.repository.findOne({ where: { id:ctx.user.id},
+      relations: {patients:true} });
+  
+      const patientIds = userid.patients.map(patient => patient.id);
+      var aa= patientIds[0]
+      console.log(patientIds);
+  
+      const pat = await this.patientRepository.findOne({ where: { id: aa } });
+
 
   
   
@@ -167,7 +177,7 @@ export class UserService {
 
     delete user.password;
 
-    return user;
+    return pat;
   }
 
   async findByEmail(ctx: RequestContext, email: string): Promise<UserOutput> {
@@ -179,11 +189,12 @@ export class UserService {
     return plainToClass(UserOutput, user);
   }
 
-  async getUserById(ctx: RequestContext, id: number): Promise<UserOutput> {
+  async getUserById(ctx: RequestContext, id: number): Promise<any> {
     this.logger.log(ctx, `${this.getUserById.name} was called`);
 
     this.logger.log(ctx, `calling ${UserRepository.name}.getById`);
-    const user = await this.repository.getById(id);
+    const user = await this.patientRepository.getById(id);
+    return user
 
     return plainToClass(UserOutput, user, {
       excludeExtraneousValues: true,

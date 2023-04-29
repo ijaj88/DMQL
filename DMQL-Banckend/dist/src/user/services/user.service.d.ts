@@ -26,12 +26,12 @@ export declare class UserService {
     validateUsernamePassword(ctx: RequestContext, username: string, pass: string): Promise<UserOutput>;
     parseAndUpdateUserInformation(ctx: RequestContext, input: string): Promise<void>;
     getUsers(ctx: RequestContext, limit: number, offset: number): Promise<{
-        users: UserOutput[];
+        users: any;
         count: number;
     }>;
-    findById(ctx: RequestContext, id: number): Promise<User>;
+    findById(ctx: RequestContext, id: number): Promise<any>;
     findByEmail(ctx: RequestContext, email: string): Promise<UserOutput>;
-    getUserById(ctx: RequestContext, id: number): Promise<UserOutput>;
+    getUserById(ctx: RequestContext, id: number): Promise<any>;
     findByUsername(ctx: RequestContext, username: string): Promise<UserOutput>;
     updateUser(ctx: RequestContext, userId: number, input: UpdateUserInput): Promise<UserOutput>;
     updateRole(ctx: RequestContext, input: UpdateRoleDto): Promise<UserOutput>;

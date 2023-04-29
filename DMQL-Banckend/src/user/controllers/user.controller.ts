@@ -47,6 +47,8 @@ import { PatientAppointmentsDto} from '../dtos/user-appointment.dto'
 import { DoctOutput } from '../dtos/doctor-output.dto';
 
 import {BookingInput} from '../dtos/user-booking-input.dto'
+import { patient } from '../entities/patient.entity';
+
 
 @ApiTags('users')
 @Controller('users/patient')
@@ -74,7 +76,7 @@ export class UserController {
   })
   async getMyProfile(
     @ReqContext() ctx: RequestContext,
-  ): Promise<BaseApiResponse<User>> {
+  ): Promise<BaseApiResponse<any>> {
     this.logger.log(ctx, `${this.getMyProfile.name} was called`);
 
     const user = await this.userService.findById(ctx, ctx.user.id);
@@ -99,7 +101,7 @@ export class UserController {
   async getUsers(
     @ReqContext() ctx: RequestContext,
     @Query() query: PaginationParamsDto,
-  ): Promise<BaseApiResponse<UserOutput[]>> {
+  ): Promise<BaseApiResponse<any>> {
     this.logger.log(ctx, `${this.getUsers.name} was called`);
 
     const { users, count } = await this.userService.getUsers(
@@ -133,7 +135,7 @@ export class UserController {
   async getUser(
     @ReqContext() ctx: RequestContext,
     @Param('id') id: number,
-  ): Promise<BaseApiResponse<UserOutput>> {
+  ): Promise<BaseApiResponse<any>> {
     this.logger.log(ctx, `${this.getUser.name} was called`);
 
     const user = await this.userService.getUserById(ctx, id);

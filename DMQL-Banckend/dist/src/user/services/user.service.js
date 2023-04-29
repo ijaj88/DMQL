@@ -103,15 +103,15 @@ let UserService = UserService_1 = class UserService {
     async getUsers(ctx, limit, offset) {
         this.logger.log(ctx, `${this.getUsers.name} was called`);
         this.logger.log(ctx, `calling ${user_repository_1.UserRepository.name}.findAndCount`);
-        const [users, count] = await this.repository.findAndCount({
+        const [users, count] = await this.patientRepository.findAndCount({
             where: {},
             take: limit,
             skip: offset,
         });
-        const usersOutput = (0, class_transformer_1.plainToClass)(user_output_dto_1.UserOutput, users, {
+        const usersOutput = (0, class_transformer_1.plainToClass)(patient_entity_1.patient, users, {
             excludeExtraneousValues: true,
         });
-        return { users: usersOutput, count };
+        return { users: users, count };
     }
     async findById(ctx, id) {
         this.logger.log(ctx, `${this.findById.name} was called`);
@@ -119,8 +119,14 @@ let UserService = UserService_1 = class UserService {
         const user = await this.repository.findOne({
             where: { id },
         });
+        const userid = await this.repository.findOne({ where: { id: ctx.user.id },
+            relations: { patients: true } });
+        const patientIds = userid.patients.map(patient => patient.id);
+        var aa = patientIds[0];
+        console.log(patientIds);
+        const pat = await this.patientRepository.findOne({ where: { id: aa } });
         delete user.password;
-        return user;
+        return pat;
     }
     async findByEmail(ctx, email) {
         this.logger.log(ctx, `${this.findById.name} was called`);
@@ -131,7 +137,8 @@ let UserService = UserService_1 = class UserService {
     async getUserById(ctx, id) {
         this.logger.log(ctx, `${this.getUserById.name} was called`);
         this.logger.log(ctx, `calling ${user_repository_1.UserRepository.name}.getById`);
-        const user = await this.repository.getById(id);
+        const user = await this.patientRepository.getById(id);
+        return user;
         return (0, class_transformer_1.plainToClass)(user_output_dto_1.UserOutput, user, {
             excludeExtraneousValues: true,
         });
