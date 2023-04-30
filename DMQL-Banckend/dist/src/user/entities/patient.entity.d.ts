@@ -3,6 +3,8 @@ import { Appointment } from './appointment.entity';
 import { PatientServiceLab } from '../entities/patientservicelab.entity';
 import { PatientServiceMedicine } from '../entities/patientservicemedicine.entity';
 import { patienthistory } from '../entities/patienthistory.entity';
+import { InsuranceInfo } from '../entities/insurance.entity';
+import { billingdetails } from './bill.entity';
 export declare class patient {
     id: number;
     firstname: string;
@@ -20,4 +22,6 @@ export declare class patient {
     labservice: PatientServiceLab[];
     medservice: PatientServiceMedicine[];
     patientlog: patienthistory[];
+    insurance: InsuranceInfo[];
+    billing: billingdetails[];
 }

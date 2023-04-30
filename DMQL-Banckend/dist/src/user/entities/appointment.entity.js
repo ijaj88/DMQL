@@ -13,6 +13,7 @@ exports.Appointment = void 0;
 const typeorm_1 = require("typeorm");
 const patient_entity_1 = require("./patient.entity");
 const doctor_entity_1 = require("./doctor.entity");
+const bill_entity_1 = require("./bill.entity");
 let Appointment = class Appointment {
 };
 __decorate([
@@ -43,6 +44,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
 ], Appointment.prototype, "slotnumbder", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => bill_entity_1.billingdetails, billingdetails => billingdetails.appointments),
+    __metadata("design:type", Array)
+], Appointment.prototype, "billing", void 0);
 Appointment = __decorate([
     (0, typeorm_1.Entity)('appointment')
 ], Appointment);

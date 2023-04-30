@@ -19,6 +19,8 @@ import {
  import {PatientServiceLab} from '../entities/patientservicelab.entity'
  import {PatientServiceMedicine} from '../entities/patientservicemedicine.entity'
  import {patienthistory} from '../entities/patienthistory.entity'
+ import {InsuranceInfo } from '../entities/insurance.entity'
+ import { billingdetails } from './bill.entity';
 
 
   @Entity('patient')
@@ -75,10 +77,18 @@ import {
     @OneToMany(() => patienthistory, patienthistory => patienthistory.patients)
     patientlog: patienthistory[]; 
 
-    
 
-    
+    @OneToMany(() => InsuranceInfo, InsuranceInfo => InsuranceInfo.patients)
+    insurance: InsuranceInfo[]; 
 
+
+    @OneToMany(() => billingdetails, billingdetails => billingdetails.patients)
+    billing: billingdetails[]; 
+
+
+
+
+        
     
     
   }

@@ -1,5 +1,6 @@
 import { patient } from './patient.entity';
 import { Doctor } from './doctor.entity';
+import { billingdetails } from './bill.entity';
 export declare class Appointment {
     id: number;
     BookedAt: Date;
@@ -8,4 +9,5 @@ export declare class Appointment {
     doctor: Doctor;
     patients: patient;
     slotnumbder: number;
+    billing: billingdetails[];
 }

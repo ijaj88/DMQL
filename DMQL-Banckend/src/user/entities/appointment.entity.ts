@@ -15,6 +15,9 @@ import {
   import { patient } from './patient.entity';
   import { Doctor } from './doctor.entity';
   import { Admin } from './admin.entity';
+
+  import { billingdetails } from './bill.entity';
+
   
   @Entity('appointment')
   export class Appointment {
@@ -37,6 +40,9 @@ import {
     patients: patient;  
     @Column({ nullable: true })
     slotnumbder: number; 
+
+    @OneToMany(() => billingdetails, billingdetails => billingdetails.appointments)
+    billing: billingdetails[]; 
     
   }
   

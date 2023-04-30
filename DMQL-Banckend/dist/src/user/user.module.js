@@ -24,6 +24,10 @@ const doctor_service_1 = require("./services/doctor.service");
 const patient_repository_1 = require("./repositories/patient.repository");
 const appointment_repository_1 = require("./repositories/appointment.repository");
 const query_repository_1 = require("./repositories/query.repository");
+const patientservice_respository_1 = require("./repositories/patientservice.respository");
+const patientservice_respository_2 = require("./repositories/patientservice.respository");
+const patientservice_respository_3 = require("./repositories/patientservice.respository");
+const patientservice_respository_4 = require("./repositories/patientservice.respository");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
@@ -32,9 +36,12 @@ UserModule = __decorate([
         providers: [user_service_1.UserService, jwt_auth_strategy_1.JwtAuthStrategy, user_acl_service_1.UserAclService,
             user_repository_1.UserRepository, doctor_service_1.DoctorService,
             doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, admin_repository_1.AdminRepository, query_repository_1.QueryRepository,
-            patient_repository_1.PatientRepository, appointment_repository_1.AppoitmentRepository],
+            patient_repository_1.PatientRepository, appointment_repository_1.AppoitmentRepository, patientservice_respository_1.PatientMedicineRepository, patientservice_respository_2.PatientLabRepository,
+            patientservice_respository_3.MedicineRepository, patientservice_respository_4.LabRepository],
         controllers: [user_controller_1.UserController, doctor_controller_1.DoctorController],
-        exports: [user_service_1.UserService, doctor_service_1.DoctorService, doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, query_repository_1.QueryRepository],
+        exports: [user_service_1.UserService, doctor_service_1.DoctorService, doctor_repository_1.DoctorRepository, doctor_schedule_repository_1.DoctorDutyRepository, query_repository_1.QueryRepository,
+            patientservice_respository_1.PatientMedicineRepository, patientservice_respository_2.PatientLabRepository,
+            patientservice_respository_3.MedicineRepository, patientservice_respository_4.LabRepository],
     })
 ], UserModule);
 exports.UserModule = UserModule;

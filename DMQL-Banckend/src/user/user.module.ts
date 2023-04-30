@@ -16,13 +16,22 @@ import { DoctorService } from './services/doctor.service';
 import { PatientRepository } from './repositories/patient.repository';
 import { AppoitmentRepository} from './repositories/appointment.repository'
 import {QueryRepository } from './repositories/query.repository'
+import { PatientMedicineRepository
+ } from './repositories/patientservice.respository';
+import { PatientLabRepository } from './repositories/patientservice.respository'; 
+import { MedicineRepository } from './repositories/patientservice.respository';
+import { LabRepository } from './repositories/patientservice.respository';
+
 @Module({
   imports: [SharedModule, TypeOrmModule.forFeature([User])],
   providers: [UserService, JwtAuthStrategy, UserAclService,
      UserRepository,DoctorService,
     DoctorRepository,DoctorDutyRepository,AdminRepository,QueryRepository,
-    PatientRepository,AppoitmentRepository],
+    PatientRepository,AppoitmentRepository,PatientMedicineRepository,PatientLabRepository
+  ,MedicineRepository,LabRepository],
   controllers: [UserController,DoctorController],
-  exports: [UserService,DoctorService,DoctorRepository,DoctorDutyRepository,QueryRepository],
+  exports: [UserService,DoctorService,DoctorRepository,DoctorDutyRepository,QueryRepository,
+    PatientMedicineRepository,PatientLabRepository
+    ,MedicineRepository,LabRepository],
 })
 export class UserModule {}

@@ -46,6 +46,7 @@ import {
   import { DoctorService } from '../services/doctor.service';
   import { Doctor } from '../entities/doctor.entity';
   import { DoctOutput } from '../dtos/doctor-output.dto';
+  import {BookingService} from '../dtos/patientservice.dto'
   
   @ApiTags('users')
   @Controller('users/doctor')
@@ -80,7 +81,64 @@ import {
       const user = await this.DoctorService.findById(ctx, ctx.user.id);
       return { data: user, meta: {} };
     }
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('MedList')
+    @ApiOperation({
+      summary: 'Get users as a list API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse([UserOutput]),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    //@UseGuards(JwtAuthGuard, RolesGuard)
+    //@Roles(ROLE.ADMIN, ROLE.USER)
+    async getUsers1(
+      @ReqContext() ctx: RequestContext,
+      @Query() query: PaginationParamsDto,
+    ): Promise<BaseApiResponse<any[]>> {
   
+      const a = await this.DoctorService.MedicineList(
+        ctx,
+        query.limit,
+        query.offset,
+      );
+  
+      return a;
+    }
+  
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('LabList')
+    @ApiOperation({
+      summary: 'Get users as a list API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse([UserOutput]),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    //@UseGuards(JwtAuthGuard, RolesGuard)
+    //@Roles(ROLE.ADMIN, ROLE.USER)
+    async getUsers2(
+      @ReqContext() ctx: RequestContext,
+      @Query() query: PaginationParamsDto,
+    ): Promise<BaseApiResponse<any[]>> {
+  
+      const a = await this.DoctorService.LabList(
+        ctx,
+        query.limit,
+        query.offset,
+      );
+  
+      return a;
+    }
+
     @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     @ApiOperation({
@@ -247,5 +305,70 @@ import {
       const user = await this.DoctorService.GeneralQuery(id);
       return { data: user, meta: {} };
     }
+
+
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Post('/PatientMedice/:id')
+    @ApiOperation({
+      summary: 'Get user by id API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse(UserOutput),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      type: BaseApiErrorResponse,
+    })
+    async PatinetMedice(
+      @ReqContext() ctx: RequestContext,
+      @Param('id') id: number,
+      @Body() input: BookingService
+
+    ): Promise<BaseApiResponse<any>> {
+      this.logger.log(ctx, `${this.getUser.name} was called`);
+  
+      const user = await this.DoctorService.PatientMedserve(ctx, id,input);
+      return { data: user, meta: {} };
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Post('/PatientLab/:id')
+    @ApiOperation({
+      summary: 'Get user by id API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse(UserOutput),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      type: BaseApiErrorResponse,
+    })
+    async PatinetLab(
+      @ReqContext() ctx: RequestContext,
+      @Param('id') id: number,
+      @Body() input: BookingService
+
+    ): Promise<BaseApiResponse<any>> {
+      this.logger.log(ctx, `${this.getUser.name} was called`);
+  
+      const user = await this.DoctorService.PatientLabserve(ctx, id,input);
+      return { data: user, meta: {} };
+    }
+
+  
+
+
+
   }
   

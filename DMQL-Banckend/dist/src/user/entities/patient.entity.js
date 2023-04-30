@@ -16,6 +16,8 @@ const appointment_entity_1 = require("./appointment.entity");
 const patientservicelab_entity_1 = require("../entities/patientservicelab.entity");
 const patientservicemedicine_entity_1 = require("../entities/patientservicemedicine.entity");
 const patienthistory_entity_1 = require("../entities/patienthistory.entity");
+const insurance_entity_1 = require("../entities/insurance.entity");
+const bill_entity_1 = require("./bill.entity");
 let patient = class patient {
 };
 __decorate([
@@ -83,6 +85,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => patienthistory_entity_1.patienthistory, patienthistory => patienthistory.patients),
     __metadata("design:type", Array)
 ], patient.prototype, "patientlog", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => insurance_entity_1.InsuranceInfo, InsuranceInfo => InsuranceInfo.patients),
+    __metadata("design:type", Array)
+], patient.prototype, "insurance", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => bill_entity_1.billingdetails, billingdetails => billingdetails.patients),
+    __metadata("design:type", Array)
+], patient.prototype, "billing", void 0);
 patient = __decorate([
     (0, typeorm_1.Entity)('patient')
 ], patient);

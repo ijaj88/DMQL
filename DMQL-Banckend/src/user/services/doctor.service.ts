@@ -19,6 +19,18 @@ import { QueryBook } from '../entities/querystat.entity'
 import { QueryRepository } from '../repositories/query.repository'
 import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
 
+import { PatientMedicineRepository
+} from '../repositories/patientservice.respository';
+import { PatientLabRepository } from '../repositories/patientservice.respository'; 
+import { MedicineRepository } from '../repositories/patientservice.respository';
+import { LabRepository } from '../repositories/patientservice.respository';
+import {BookingService} from '../dtos/patientservice.dto'
+import { patient } from '../entities/patient.entity';
+import { PatientServiceLab
+ } from '../entities/patientservicelab.entity';
+import { PatientServiceMedicine } from '../entities/patientservicemedicine.entity';
+import { PatientRepository } from '../repositories/patient.repository';
+
 @Injectable()
 export class DoctorService {
   constructor(
@@ -27,7 +39,14 @@ export class DoctorService {
     private readonly doctorRepository: DoctorRepository,
     private readonly entityManager: EntityManager,
     private readonly QueryRepository: QueryRepository,
-    private readonly DoctorDutyRepository:DoctorDutyRepository
+    private readonly DoctorDutyRepository:DoctorDutyRepository,
+    private readonly PatientLabRepository: PatientLabRepository,
+    private readonly MedicineRepository: MedicineRepository,
+    private readonly LabRepository: LabRepository,
+    private readonly PatientMedicineRepository: PatientMedicineRepository,
+    private readonly PatientRepository:PatientRepository
+
+
 
 
   ) {
@@ -128,7 +147,89 @@ export class DoctorService {
     console.log(replacedQuery);
     return replacedQuery;
   }
+
+  async PatientMedserve(ctx: RequestContext, id: number,input:BookingService): Promise<any> {
+
+    const med = await this.MedicineRepository.findOne({
+      where: { id:input.servicenumder },
+     // relations: { affiliation_to_user: true },
+    });
+
+    const appoint = new PatientServiceMedicine();
+    const pat = await this.PatientRepository.getById(id)
+
+    appoint.patients=pat
+
+    appoint.medicine=med
+
+    console.log(pat,med)
+    
+    const medservice= await this.PatientMedicineRepository.save(appoint)
+    
+    
+
+
+    
+   // user.affilation = affilationObj
+
+    return medservice;
+
+  }
   
+  async PatientLabserve(ctx: RequestContext, id: number,input:BookingService): Promise<any> {
+
+    const med = await this.LabRepository.findOne({
+      where: { id:input.servicenumder },
+     // relations: { affiliation_to_user: true },
+    });
+
+    const appoint = new PatientServiceLab();
+    const pat = await this.PatientRepository.getById(id)
+
+    appoint.patients=pat
+
+    appoint.lab=med
+
+    console.log(pat,med)
+    
+    const medservice= await this.PatientLabRepository.save(appoint)
+    
+    
+    
+   // user.affilation = affilationObj
+
+    return medservice;
+
+  }
+  async MedicineList(
+    ctx: RequestContext,
+    limit: number,
+    offset: number,
+  ): Promise<any> {
+
+
+    const a = await this.MedicineRepository.find({
+      where: {},
+      take: limit,
+      skip: offset,
+    });
+    return a
+  }
+
+  async LabList(
+    ctx: RequestContext,
+    limit: number,
+    offset: number,
+  ): Promise<any> {
+
+
+    const a = await this.LabRepository.find({
+      where: {},
+      take: limit,
+      skip: offset,
+    });
+    return a
+  }
 
 
 /*

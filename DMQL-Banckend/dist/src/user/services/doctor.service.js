@@ -22,14 +22,26 @@ const doctor_output_dto_1 = require("../dtos/doctor-output.dto");
 const typeorm_1 = require("typeorm");
 const query_repository_1 = require("../repositories/query.repository");
 const doctor_schedule_repository_1 = require("../repositories/doctor.schedule.repository");
+const patientservice_respository_1 = require("../repositories/patientservice.respository");
+const patientservice_respository_2 = require("../repositories/patientservice.respository");
+const patientservice_respository_3 = require("../repositories/patientservice.respository");
+const patientservice_respository_4 = require("../repositories/patientservice.respository");
+const patientservicelab_entity_1 = require("../entities/patientservicelab.entity");
+const patientservicemedicine_entity_1 = require("../entities/patientservicemedicine.entity");
+const patient_repository_1 = require("../repositories/patient.repository");
 let DoctorService = DoctorService_1 = class DoctorService {
-    constructor(repository, logger, doctorRepository, entityManager, QueryRepository, DoctorDutyRepository) {
+    constructor(repository, logger, doctorRepository, entityManager, QueryRepository, DoctorDutyRepository, PatientLabRepository, MedicineRepository, LabRepository, PatientMedicineRepository, PatientRepository) {
         this.repository = repository;
         this.logger = logger;
         this.doctorRepository = doctorRepository;
         this.entityManager = entityManager;
         this.QueryRepository = QueryRepository;
         this.DoctorDutyRepository = DoctorDutyRepository;
+        this.PatientLabRepository = PatientLabRepository;
+        this.MedicineRepository = MedicineRepository;
+        this.LabRepository = LabRepository;
+        this.PatientMedicineRepository = PatientMedicineRepository;
+        this.PatientRepository = PatientRepository;
         this.logger.setContext(DoctorService_1.name);
     }
     async createUser(ctx, input) {
@@ -89,6 +101,46 @@ let DoctorService = DoctorService_1 = class DoctorService {
         console.log(replacedQuery);
         return replacedQuery;
     }
+    async PatientMedserve(ctx, id, input) {
+        const med = await this.MedicineRepository.findOne({
+            where: { id: input.servicenumder },
+        });
+        const appoint = new patientservicemedicine_entity_1.PatientServiceMedicine();
+        const pat = await this.PatientRepository.getById(id);
+        appoint.patients = pat;
+        appoint.medicine = med;
+        console.log(pat, med);
+        const medservice = await this.PatientMedicineRepository.save(appoint);
+        return medservice;
+    }
+    async PatientLabserve(ctx, id, input) {
+        const med = await this.LabRepository.findOne({
+            where: { id: input.servicenumder },
+        });
+        const appoint = new patientservicelab_entity_1.PatientServiceLab();
+        const pat = await this.PatientRepository.getById(id);
+        appoint.patients = pat;
+        appoint.lab = med;
+        console.log(pat, med);
+        const medservice = await this.PatientLabRepository.save(appoint);
+        return medservice;
+    }
+    async MedicineList(ctx, limit, offset) {
+        const a = await this.MedicineRepository.find({
+            where: {},
+            take: limit,
+            skip: offset,
+        });
+        return a;
+    }
+    async LabList(ctx, limit, offset) {
+        const a = await this.LabRepository.find({
+            where: {},
+            take: limit,
+            skip: offset,
+        });
+        return a;
+    }
 };
 DoctorService = DoctorService_1 = __decorate([
     (0, common_1.Injectable)(),
@@ -97,7 +149,12 @@ DoctorService = DoctorService_1 = __decorate([
         doctor_repository_1.DoctorRepository,
         typeorm_1.EntityManager,
         query_repository_1.QueryRepository,
-        doctor_schedule_repository_1.DoctorDutyRepository])
+        doctor_schedule_repository_1.DoctorDutyRepository,
+        patientservice_respository_2.PatientLabRepository,
+        patientservice_respository_3.MedicineRepository,
+        patientservice_respository_4.LabRepository,
+        patientservice_respository_1.PatientMedicineRepository,
+        patient_repository_1.PatientRepository])
 ], DoctorService);
 exports.DoctorService = DoctorService;
 //# sourceMappingURL=doctor.service.js.map

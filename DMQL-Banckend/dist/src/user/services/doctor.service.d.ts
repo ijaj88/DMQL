@@ -9,6 +9,12 @@ import { DoctOutput } from '../dtos/doctor-output.dto';
 import { EntityManager } from 'typeorm';
 import { QueryRepository } from '../repositories/query.repository';
 import { DoctorDutyRepository } from '../repositories/doctor.schedule.repository';
+import { PatientMedicineRepository } from '../repositories/patientservice.respository';
+import { PatientLabRepository } from '../repositories/patientservice.respository';
+import { MedicineRepository } from '../repositories/patientservice.respository';
+import { LabRepository } from '../repositories/patientservice.respository';
+import { BookingService } from '../dtos/patientservice.dto';
+import { PatientRepository } from '../repositories/patient.repository';
 export declare class DoctorService {
     private repository;
     private readonly logger;
@@ -16,7 +22,12 @@ export declare class DoctorService {
     private readonly entityManager;
     private readonly QueryRepository;
     private readonly DoctorDutyRepository;
-    constructor(repository: UserRepository, logger: AppLogger, doctorRepository: DoctorRepository, entityManager: EntityManager, QueryRepository: QueryRepository, DoctorDutyRepository: DoctorDutyRepository);
+    private readonly PatientLabRepository;
+    private readonly MedicineRepository;
+    private readonly LabRepository;
+    private readonly PatientMedicineRepository;
+    private readonly PatientRepository;
+    constructor(repository: UserRepository, logger: AppLogger, doctorRepository: DoctorRepository, entityManager: EntityManager, QueryRepository: QueryRepository, DoctorDutyRepository: DoctorDutyRepository, PatientLabRepository: PatientLabRepository, MedicineRepository: MedicineRepository, LabRepository: LabRepository, PatientMedicineRepository: PatientMedicineRepository, PatientRepository: PatientRepository);
     createUser(ctx: RequestContext, input: CreateUserInput): Promise<UserOutput>;
     findByIdInternal(ctx: RequestContext, id: number): Promise<Doctor>;
     getUsers(ctx: RequestContext, limit: number, offset: number): Promise<{
@@ -29,4 +40,8 @@ export declare class DoctorService {
     buildQ(queryString: string, params: {
         [key: string]: any;
     }): Promise<string>;
+    PatientMedserve(ctx: RequestContext, id: number, input: BookingService): Promise<any>;
+    PatientLabserve(ctx: RequestContext, id: number, input: BookingService): Promise<any>;
+    MedicineList(ctx: RequestContext, limit: number, offset: number): Promise<any>;
+    LabList(ctx: RequestContext, limit: number, offset: number): Promise<any>;
 }
