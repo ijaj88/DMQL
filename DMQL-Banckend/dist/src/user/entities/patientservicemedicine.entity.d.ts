@@ -1,9 +1,9 @@
-import { patient } from './patient.entity';
 import { MediceInfo } from './medicine.entity';
+import { Appointment } from './appointment.entity';
 export declare class PatientServiceMedicine {
     id: number;
     medicine: MediceInfo;
     createdAt: Date;
     updatedAt: Date;
-    patients: patient;
+    appointments: Appointment;
 }

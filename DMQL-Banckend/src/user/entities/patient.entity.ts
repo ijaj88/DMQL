@@ -68,11 +68,11 @@ import {
     @OneToMany(() => Appointment, Appointment => Appointment.patients)
     appointment: Appointment[];
 
-    @OneToMany(() => PatientServiceLab, PatientServiceLab => PatientServiceLab.patients)
-    labservice: PatientServiceLab[]; 
+    //@OneToMany(() => PatientServiceLab, PatientServiceLab => PatientServiceLab.patients)
+    //labservice: PatientServiceLab[]; 
 
-    @OneToMany(() => PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.patients)
-    medservice: PatientServiceMedicine[]; 
+    //@OneToMany(() => PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.patients)
+    //medservice: PatientServiceMedicine[]; 
 
     @OneToMany(() => patienthistory, patienthistory => patienthistory.patients)
     patientlog: patienthistory[]; 
@@ -82,8 +82,8 @@ import {
     insurance: InsuranceInfo[]; 
 
 
-    @OneToMany(() => billingdetails, billingdetails => billingdetails.patients)
-    billing: billingdetails[]; 
+//    @OneToMany(() => billingdetails, billingdetails => billingdetails.patients)
+//    billing: billingdetails[]; 
 
 
 

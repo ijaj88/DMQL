@@ -17,6 +17,8 @@ import {
   import { Admin } from './admin.entity';
 
   import { billingdetails } from './bill.entity';
+  import {PatientServiceLab} from '../entities/patientservicelab.entity'
+  import {PatientServiceMedicine} from '../entities/patientservicemedicine.entity'
 
   
   @Entity('appointment')
@@ -43,6 +45,16 @@ import {
 
     @OneToMany(() => billingdetails, billingdetails => billingdetails.appointments)
     billing: billingdetails[]; 
+
+
+    @OneToMany(() => PatientServiceLab, PatientServiceLab => PatientServiceLab.appointments)
+    labservice: PatientServiceLab[]; 
+
+    @OneToMany(() => PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.appointments)
+    medservice: PatientServiceMedicine[]; 
+
+
+
     
   }
   

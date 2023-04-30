@@ -15,6 +15,7 @@ import {
   import { User } from '../entities/users.entity';
   import { patient } from './patient.entity';
   import { LabInfo } from './lab.entity';
+  import { Appointment } from './appointment.entity';
 
   @Entity('patinetservicelab')
   export class PatientServiceLab {
@@ -35,8 +36,10 @@ import {
     @UpdateDateColumn({ name: 'updatedAt', nullable: true })
     updatedAt: Date;
 
-    @ManyToOne(() => patient, patient => patient.labservice)
-    patients: patient;  
+
+
+    @ManyToOne(() => Appointment, Appointment => Appointment.labservice)
+    appointments: Appointment;  
 
 
 

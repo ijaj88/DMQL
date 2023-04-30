@@ -15,6 +15,9 @@ import { MedicineRepository } from '../repositories/patientservice.respository';
 import { LabRepository } from '../repositories/patientservice.respository';
 import { BookingService } from '../dtos/patientservice.dto';
 import { PatientRepository } from '../repositories/patient.repository';
+import { AppoitmentRepository } from '../repositories/appointment.repository';
+import { BillingRepository } from '../repositories/billing.repository';
+import { insuranceRepository } from '../repositories/insurance.repository';
 export declare class DoctorService {
     private repository;
     private readonly logger;
@@ -27,7 +30,10 @@ export declare class DoctorService {
     private readonly LabRepository;
     private readonly PatientMedicineRepository;
     private readonly PatientRepository;
-    constructor(repository: UserRepository, logger: AppLogger, doctorRepository: DoctorRepository, entityManager: EntityManager, QueryRepository: QueryRepository, DoctorDutyRepository: DoctorDutyRepository, PatientLabRepository: PatientLabRepository, MedicineRepository: MedicineRepository, LabRepository: LabRepository, PatientMedicineRepository: PatientMedicineRepository, PatientRepository: PatientRepository);
+    private readonly AppoitmentRepository;
+    private readonly BillingRepository;
+    private readonly insuranceRepository;
+    constructor(repository: UserRepository, logger: AppLogger, doctorRepository: DoctorRepository, entityManager: EntityManager, QueryRepository: QueryRepository, DoctorDutyRepository: DoctorDutyRepository, PatientLabRepository: PatientLabRepository, MedicineRepository: MedicineRepository, LabRepository: LabRepository, PatientMedicineRepository: PatientMedicineRepository, PatientRepository: PatientRepository, AppoitmentRepository: AppoitmentRepository, BillingRepository: BillingRepository, insuranceRepository: insuranceRepository);
     createUser(ctx: RequestContext, input: CreateUserInput): Promise<UserOutput>;
     findByIdInternal(ctx: RequestContext, id: number): Promise<Doctor>;
     getUsers(ctx: RequestContext, limit: number, offset: number): Promise<{
@@ -44,4 +50,5 @@ export declare class DoctorService {
     PatientLabserve(ctx: RequestContext, id: number, input: BookingService): Promise<any>;
     MedicineList(ctx: RequestContext, limit: number, offset: number): Promise<any>;
     LabList(ctx: RequestContext, limit: number, offset: number): Promise<any>;
+    PatientBilling(ctx: RequestContext, id: number, input: BookingService): Promise<any>;
 }

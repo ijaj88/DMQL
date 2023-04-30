@@ -29,8 +29,12 @@ const patientservice_respository_4 = require("../repositories/patientservice.res
 const patientservicelab_entity_1 = require("../entities/patientservicelab.entity");
 const patientservicemedicine_entity_1 = require("../entities/patientservicemedicine.entity");
 const patient_repository_1 = require("../repositories/patient.repository");
+const appointment_repository_1 = require("../repositories/appointment.repository");
+const billing_repository_1 = require("../repositories/billing.repository");
+const insurance_repository_1 = require("../repositories/insurance.repository");
+const bill_entity_1 = require("../entities/bill.entity");
 let DoctorService = DoctorService_1 = class DoctorService {
-    constructor(repository, logger, doctorRepository, entityManager, QueryRepository, DoctorDutyRepository, PatientLabRepository, MedicineRepository, LabRepository, PatientMedicineRepository, PatientRepository) {
+    constructor(repository, logger, doctorRepository, entityManager, QueryRepository, DoctorDutyRepository, PatientLabRepository, MedicineRepository, LabRepository, PatientMedicineRepository, PatientRepository, AppoitmentRepository, BillingRepository, insuranceRepository) {
         this.repository = repository;
         this.logger = logger;
         this.doctorRepository = doctorRepository;
@@ -42,6 +46,9 @@ let DoctorService = DoctorService_1 = class DoctorService {
         this.LabRepository = LabRepository;
         this.PatientMedicineRepository = PatientMedicineRepository;
         this.PatientRepository = PatientRepository;
+        this.AppoitmentRepository = AppoitmentRepository;
+        this.BillingRepository = BillingRepository;
+        this.insuranceRepository = insuranceRepository;
         this.logger.setContext(DoctorService_1.name);
     }
     async createUser(ctx, input) {
@@ -106,8 +113,8 @@ let DoctorService = DoctorService_1 = class DoctorService {
             where: { id: input.servicenumder },
         });
         const appoint = new patientservicemedicine_entity_1.PatientServiceMedicine();
-        const pat = await this.PatientRepository.getById(id);
-        appoint.patients = pat;
+        const pat = await this.AppoitmentRepository.getById(id);
+        appoint.appointments = pat;
         appoint.medicine = med;
         console.log(pat, med);
         const medservice = await this.PatientMedicineRepository.save(appoint);
@@ -118,8 +125,8 @@ let DoctorService = DoctorService_1 = class DoctorService {
             where: { id: input.servicenumder },
         });
         const appoint = new patientservicelab_entity_1.PatientServiceLab();
-        const pat = await this.PatientRepository.getById(id);
-        appoint.patients = pat;
+        const pat = await this.AppoitmentRepository.getById(id);
+        appoint.appointments = pat;
         appoint.lab = med;
         console.log(pat, med);
         const medservice = await this.PatientLabRepository.save(appoint);
@@ -141,6 +148,21 @@ let DoctorService = DoctorService_1 = class DoctorService {
         });
         return a;
     }
+    async PatientBilling(ctx, id, input) {
+        const med = await this.LabRepository.findOne({
+            where: { id: input.servicenumder },
+        });
+        const appoint = new bill_entity_1.billingdetails();
+        const pat = await this.AppoitmentRepository.getById(id);
+        const insurance = await this.insuranceRepository.getById(input.servicenumder);
+        appoint.appointments = pat;
+        appoint.insurances = insurance;
+        const randomNum = Math.floor(Math.random() * 90000) + 10000;
+        appoint.Amount = randomNum;
+        console.log(pat, med);
+        const medservice = await this.BillingRepository.save(appoint);
+        return medservice;
+    }
 };
 DoctorService = DoctorService_1 = __decorate([
     (0, common_1.Injectable)(),
@@ -154,7 +176,10 @@ DoctorService = DoctorService_1 = __decorate([
         patientservice_respository_3.MedicineRepository,
         patientservice_respository_4.LabRepository,
         patientservice_respository_1.PatientMedicineRepository,
-        patient_repository_1.PatientRepository])
+        patient_repository_1.PatientRepository,
+        appointment_repository_1.AppoitmentRepository,
+        billing_repository_1.BillingRepository,
+        insurance_repository_1.insuranceRepository])
 ], DoctorService);
 exports.DoctorService = DoctorService;
 //# sourceMappingURL=doctor.service.js.map

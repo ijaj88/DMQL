@@ -21,6 +21,8 @@ import { PatientMedicineRepository
 import { PatientLabRepository } from './repositories/patientservice.respository'; 
 import { MedicineRepository } from './repositories/patientservice.respository';
 import { LabRepository } from './repositories/patientservice.respository';
+import {BillingRepository} from './repositories/billing.repository'
+import {insuranceRepository} from './repositories/insurance.repository'
 
 @Module({
   imports: [SharedModule, TypeOrmModule.forFeature([User])],
@@ -28,10 +30,12 @@ import { LabRepository } from './repositories/patientservice.respository';
      UserRepository,DoctorService,
     DoctorRepository,DoctorDutyRepository,AdminRepository,QueryRepository,
     PatientRepository,AppoitmentRepository,PatientMedicineRepository,PatientLabRepository
-  ,MedicineRepository,LabRepository],
+  ,MedicineRepository,LabRepository,BillingRepository,insuranceRepository],
+
   controllers: [UserController,DoctorController],
+  
   exports: [UserService,DoctorService,DoctorRepository,DoctorDutyRepository,QueryRepository,
     PatientMedicineRepository,PatientLabRepository
-    ,MedicineRepository,LabRepository],
+    ,MedicineRepository,LabRepository,BillingRepository,insuranceRepository],
 })
 export class UserModule {}

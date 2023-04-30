@@ -14,6 +14,8 @@ const typeorm_1 = require("typeorm");
 const patient_entity_1 = require("./patient.entity");
 const doctor_entity_1 = require("./doctor.entity");
 const bill_entity_1 = require("./bill.entity");
+const patientservicelab_entity_1 = require("../entities/patientservicelab.entity");
+const patientservicemedicine_entity_1 = require("../entities/patientservicemedicine.entity");
 let Appointment = class Appointment {
 };
 __decorate([
@@ -48,6 +50,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => bill_entity_1.billingdetails, billingdetails => billingdetails.appointments),
     __metadata("design:type", Array)
 ], Appointment.prototype, "billing", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patientservicelab_entity_1.PatientServiceLab, PatientServiceLab => PatientServiceLab.appointments),
+    __metadata("design:type", Array)
+], Appointment.prototype, "labservice", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => patientservicemedicine_entity_1.PatientServiceMedicine, PatientServiceMedicine => PatientServiceMedicine.appointments),
+    __metadata("design:type", Array)
+], Appointment.prototype, "medservice", void 0);
 Appointment = __decorate([
     (0, typeorm_1.Entity)('appointment')
 ], Appointment);

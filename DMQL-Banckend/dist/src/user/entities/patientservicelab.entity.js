@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatientServiceLab = void 0;
 const typeorm_1 = require("typeorm");
-const patient_entity_1 = require("./patient.entity");
 const lab_entity_1 = require("./lab.entity");
+const appointment_entity_1 = require("./appointment.entity");
 let PatientServiceLab = class PatientServiceLab {
 };
 __decorate([
@@ -36,9 +36,9 @@ __decorate([
     __metadata("design:type", Date)
 ], PatientServiceLab.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => patient_entity_1.patient, patient => patient.labservice),
-    __metadata("design:type", patient_entity_1.patient)
-], PatientServiceLab.prototype, "patients", void 0);
+    (0, typeorm_1.ManyToOne)(() => appointment_entity_1.Appointment, Appointment => Appointment.labservice),
+    __metadata("design:type", appointment_entity_1.Appointment)
+], PatientServiceLab.prototype, "appointments", void 0);
 PatientServiceLab = __decorate([
     (0, typeorm_1.Entity)('patinetservicelab')
 ], PatientServiceLab);

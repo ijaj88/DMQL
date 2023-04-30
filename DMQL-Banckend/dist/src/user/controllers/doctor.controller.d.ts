@@ -23,4 +23,5 @@ export declare class DoctorController {
     MasterQueries(ctx: RequestContext, id: number): Promise<BaseApiResponse<any>>;
     PatinetMedice(ctx: RequestContext, id: number, input: BookingService): Promise<BaseApiResponse<any>>;
     PatinetLab(ctx: RequestContext, id: number, input: BookingService): Promise<BaseApiResponse<any>>;
+    Billing(ctx: RequestContext, id: number, input: BookingService): Promise<BaseApiResponse<any>>;
 }

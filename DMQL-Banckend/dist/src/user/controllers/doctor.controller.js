@@ -83,6 +83,11 @@ let DoctorController = DoctorController_1 = class DoctorController {
         const user = await this.DoctorService.PatientLabserve(ctx, id, input);
         return { data: user, meta: {} };
     }
+    async Billing(ctx, id, input) {
+        this.logger.log(ctx, `${this.getUser.name} was called`);
+        const user = await this.DoctorService.PatientBilling(ctx, id, input);
+        return { data: user, meta: {} };
+    }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
@@ -313,6 +318,31 @@ __decorate([
     __metadata("design:paramtypes", [request_context_dto_1.RequestContext, Number, patientservice_dto_1.BookingService]),
     __metadata("design:returntype", Promise)
 ], DoctorController.prototype, "PatinetLab", null);
+__decorate([
+    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
+    (0, common_1.Post)('/GenearteBill/:Appointmentid'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get user by id API',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        type: (0, base_api_response_dto_1.SwaggerBaseApiResponse)(user_output_dto_1.UserOutput),
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.UNAUTHORIZED,
+        type: base_api_response_dto_1.BaseApiErrorResponse,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.NOT_FOUND,
+        type: base_api_response_dto_1.BaseApiErrorResponse,
+    }),
+    __param(0, (0, req_context_decorator_1.ReqContext)()),
+    __param(1, (0, common_1.Param)('Appointmentid')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [request_context_dto_1.RequestContext, Number, patientservice_dto_1.BookingService]),
+    __metadata("design:returntype", Promise)
+], DoctorController.prototype, "Billing", null);
 DoctorController = DoctorController_1 = __decorate([
     (0, swagger_1.ApiTags)('users'),
     (0, common_1.Controller)('users/doctor'),

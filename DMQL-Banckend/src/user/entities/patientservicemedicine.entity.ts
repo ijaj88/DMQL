@@ -18,6 +18,9 @@ import {
   import {MediceInfo} from './medicine.entity'
   import { Doctor } from './doctor.entity';
 
+  import { Appointment } from './appointment.entity';
+
+
   @Entity('patinetservicemedicine')
   export class PatientServiceMedicine {
     @PrimaryGeneratedColumn()
@@ -33,8 +36,10 @@ import {
     @UpdateDateColumn({ name: 'updatedAt', nullable: true })
     updatedAt: Date;
 
-    @ManyToOne(() => patient, patient => patient.medservice)
-    patients: patient;  
+
+
+    @ManyToOne(() => Appointment, Appointment => Appointment.medservice)
+    appointments: Appointment;  
 
 
 

@@ -30,6 +30,12 @@ import { PatientServiceLab
  } from '../entities/patientservicelab.entity';
 import { PatientServiceMedicine } from '../entities/patientservicemedicine.entity';
 import { PatientRepository } from '../repositories/patient.repository';
+import { AppoitmentRepository} from '../repositories/appointment.repository'
+import {BillingRepository} from '../repositories/billing.repository'
+import {insuranceRepository} from '../repositories/insurance.repository'
+import { InsuranceInfo } from '../entities/insurance.entity';
+import { billingdetails } from '../entities/bill.entity';
+
 
 @Injectable()
 export class DoctorService {
@@ -44,7 +50,10 @@ export class DoctorService {
     private readonly MedicineRepository: MedicineRepository,
     private readonly LabRepository: LabRepository,
     private readonly PatientMedicineRepository: PatientMedicineRepository,
-    private readonly PatientRepository:PatientRepository
+    private readonly PatientRepository:PatientRepository,
+    private readonly AppoitmentRepository:AppoitmentRepository,
+    private readonly BillingRepository:BillingRepository,
+    private readonly insuranceRepository: insuranceRepository
 
 
 
@@ -156,9 +165,9 @@ export class DoctorService {
     });
 
     const appoint = new PatientServiceMedicine();
-    const pat = await this.PatientRepository.getById(id)
+    const pat = await this.AppoitmentRepository.getById(id)
 
-    appoint.patients=pat
+    appoint.appointments=pat
 
     appoint.medicine=med
 
@@ -184,9 +193,9 @@ export class DoctorService {
     });
 
     const appoint = new PatientServiceLab();
-    const pat = await this.PatientRepository.getById(id)
+    const pat = await this.AppoitmentRepository.getById(id)
 
-    appoint.patients=pat
+    appoint.appointments=pat
 
     appoint.lab=med
 
@@ -231,6 +240,34 @@ export class DoctorService {
     return a
   }
 
+  async PatientBilling(ctx: RequestContext, id: number,input:BookingService): Promise<any> {
+
+    const med = await this.LabRepository.findOne({
+      where: { id:input.servicenumder },
+     // relations: { affiliation_to_user: true },
+    });
+
+    const appoint = new billingdetails();
+    const pat = await this.AppoitmentRepository.getById(id)
+    const insurance = await this.insuranceRepository.getById(input.servicenumder)
+
+    appoint.appointments=pat
+    appoint.insurances=insurance
+    const randomNum = Math.floor(Math.random() * 90000) + 10000;
+     appoint.Amount=randomNum
+
+
+    console.log(pat,med)
+    
+    const medservice= await this.BillingRepository.save(appoint)
+    
+    
+    
+   // user.affilation = affilationObj
+
+    return medservice;
+
+  }
 
 /*
   async validateUsernamePassword(

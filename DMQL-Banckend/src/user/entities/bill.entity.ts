@@ -39,8 +39,8 @@ import {
   
 
    
-    @ManyToOne(() => patient, patient => patient.billing)
-    patients: patient;  
+//    @ManyToOne(() => patient, patient => patient.billing)
+//    patients: patient;  
 
     @ManyToOne(() => Appointment, Appointment => Appointment.billing)
     appointments: Appointment;  
@@ -48,10 +48,6 @@ import {
 
     @ManyToOne(() => InsuranceInfo, InsuranceInfo => InsuranceInfo.billing)
     insurances: InsuranceInfo;  
-
-
-
-
 
 
     

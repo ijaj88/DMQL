@@ -367,6 +367,34 @@ import {
     }
 
   
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Post('/GenearteBill/:Appointmentid')
+    @ApiOperation({
+      summary: 'Get user by id API',
+    })
+    @ApiResponse({
+      status: HttpStatus.OK,
+      type: SwaggerBaseApiResponse(UserOutput),
+    })
+    @ApiResponse({
+      status: HttpStatus.UNAUTHORIZED,
+      type: BaseApiErrorResponse,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      type: BaseApiErrorResponse,
+    })
+    async Billing(
+      @ReqContext() ctx: RequestContext,
+      @Param('Appointmentid') id: number,
+      @Body() input: BookingService
+
+    ): Promise<BaseApiResponse<any>> {
+      this.logger.log(ctx, `${this.getUser.name} was called`);
+  
+      const user = await this.DoctorService.PatientBilling(ctx, id,input);
+      return { data: user, meta: {} };
+    }
 
 
 

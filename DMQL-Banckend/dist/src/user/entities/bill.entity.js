@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.billingdetails = void 0;
 const typeorm_1 = require("typeorm");
 const appointment_entity_1 = require("./appointment.entity");
-const patient_entity_1 = require("./patient.entity");
 const insurance_entity_1 = require("../entities/insurance.entity");
 let billingdetails = class billingdetails {
 };
@@ -28,10 +27,6 @@ __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'createdAt', nullable: true }),
     __metadata("design:type", Date)
 ], billingdetails.prototype, "admittedon", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => patient_entity_1.patient, patient => patient.billing),
-    __metadata("design:type", patient_entity_1.patient)
-], billingdetails.prototype, "patients", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => appointment_entity_1.Appointment, Appointment => Appointment.billing),
     __metadata("design:type", appointment_entity_1.Appointment)
