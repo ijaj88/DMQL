@@ -17,8 +17,7 @@ async function bootstrap() {
         exposedHeaders: ['Authorization'],
     });
     const options = new swagger_1.DocumentBuilder()
-        .setTitle('Attendance Tracker BFF APIs')
-        .setDescription('The Attendance Tracker BFF APIs description')
+        .setTitle('Hospital Management Tracker BFF APIs')
         .setVersion('1.0')
         .addBearerAuth()
         .build();
