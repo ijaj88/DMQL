@@ -20,8 +20,8 @@ async function bootstrap() {
 
   /** Swagger configuration*/
   const options = new DocumentBuilder()
-    .setTitle('Attendance Tracker BFF APIs')
-    .setDescription('The Attendance Tracker BFF APIs description')
+    .setTitle('Hospital Management Tracker BFF APIs')
+    .setDescription('The Hospital System Tracker BFF APIs description')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
