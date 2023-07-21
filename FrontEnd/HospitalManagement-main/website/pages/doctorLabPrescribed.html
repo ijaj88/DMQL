@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patient's Lab Service</title>
+</head>
+
+<body>
+    <h1>Patient's Lab Service</h1>
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <form>
+          <button type="button" id="btn-logout">Logout</button>
+        </form>
+      </div>
+    
+
+    <form>
+       
+        <label for="service">Select your appointment number:</label>
+        <select id="service" name="service" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+
+        </select><br><br>       
+
+        <button type="button" id="getdetails-btn">Get details</button>
+    </form>
+
+
+    <form>
+        <div>
+            <div>
+                <label>Patient ID:</label>
+                <span id="patient-id"></span>
+              </div>
+
+            <label>Appointment ID:</label>
+            <span id="appointment-id"></span>
+          </div>
+          <div>
+            <label>Booking For:</label>
+            <span id="booking-for"></span>
+          </div>
+          <div>
+            <label>Slot Number:</label>
+            <span id="slot-number"></span>
+          </div>
+          <div>
+            <label>Lab ID:</label>
+            <span id="lab-id"></span>
+          </div>
+          <div>
+            <label>Lab Test Name:</label>
+            <span id="lab-name"></span>
+          </div>         
+
+    </form>
+</body>
+
+<script src="../js/doctorLabPrescribed.js"></script>
+
+</html>

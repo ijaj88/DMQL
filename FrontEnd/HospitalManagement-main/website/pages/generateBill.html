@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bill Generated</title>
+</head>
+
+<body>
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <form>
+          <button type="button" id="btn-logout">Logout</button>
+        </form>
+      </div>
+    
+    <h1>Bill Details</h1>
+    <form>       
+        <label for="service">Select your Service number:</label>
+        <select id="service" name="service" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select><br><br>
+        <button type="button" id="getdetails-btn">Get details</button>
+    </form>
+
+    <form>
+        <div>
+            <div>
+                <label>Patient ID:</label>
+                <span id="patient-id"></span>
+              </div>
+
+            <label>Appointment ID:</label>
+            <span id="appointment-id"></span>
+          </div>
+          <div>
+            <label>Booking For:</label>
+            <span id="booking-for"></span>
+          </div>
+          <div>
+            <label>Slot Number:</label>
+            <span id="slot-number"></span>
+          </div>
+          <div>
+            <label>Insurance ID:</label>
+            <span id="insurance-id"></span>
+          </div>
+          <div>
+            <label>Policy Number:</label>
+            <span id="policyno"></span>
+          </div>
+          <div>
+            <label>Insurance Name:</label>
+            <span id="insurancecompany"></span>
+          </div>  
+          
+          <div>
+            <label>Amount:</label>
+            <span id="amount"></span>
+          </div>
+
+          <div>
+            <label>Admitted On:</label>
+            <span id="admittedOn"></span>
+          </div>
+
+    </form>
+</body>
+
+<script src="../js/generateBill.js"></script>
+
+</html>

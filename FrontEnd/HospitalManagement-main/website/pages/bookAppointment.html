@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Appointment</title>
+</head>
+<body>
+
+  <div style="position: absolute; top: 10px; right: 10px;">
+    <form>
+      <button type="button" id="btn-logout">Logout</button>
+    </form>
+  </div>
+
+  <form> 
+    <button type="button" id="doctors-btn">Show Available Doctors</button>
+ 
+   
+ 
+  <h1>Available Doctors</h1>
+    <table id = 'doctor-table'>
+      
+      </thead>
+      <tbody id="slots-body">
+      </tbody>
+    </table>
+
+
+    <button type="button" id="appointment-btn">Show Available Slots</button>
+    <h1>Available Slots</h1>
+    <table id = 'appointment-table'>
+      
+      </thead>
+      <tbody id="slots-body">
+      </tbody>
+    </table>
+
+    <label for="availableId">Enter the available ID you want to book:</label>
+    <input type="number" id="availableId" name="availableId" required><br><br>
+
+    <label for="slot">Enter the Slot number you want to book:</label>
+    <input type="number" id="slot" name="slot" required><br><br>
+    <button type="button" id="slot-btn">Book Available Slots</button>
+
+</form>
+
+  <script src="js/bookAppointments.js"></script>
+</body>
+</html>

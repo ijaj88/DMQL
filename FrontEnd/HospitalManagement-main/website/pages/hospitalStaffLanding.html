@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Website</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f1f1f1;
+		}
+		
+		.container {
+			margin: 0 auto;
+			max-width: 800px;
+			padding: 20px;
+			background-color: #fff;
+			box-shadow: 0 0 10px rgba(0,0,0,0.2);
+		}
+
+		h1 {
+			font-size: 2rem;
+			margin-bottom: 20px;
+			text-align: center;
+			color: #333;
+		}
+
+		button {
+			padding: 10px 20px;
+			border: none;
+			background-color: #333;
+			color: #fff;
+			cursor: pointer;
+			font-size: 1.2rem;
+			border-radius: 5px;
+			margin-top: 20px;
+			display: block;
+			margin: 0 auto;
+		}
+
+		button:hover {
+			background-color: #444;
+		}
+
+		img {
+			display: block;
+			margin: 0 auto;
+			max-width: 200px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<img src="../logo/launchpic.png" alt="My Logo">
+		<h1>Akshara Hospital Management</h1>
+		<p>Welcome to Akshara Hospital Management. Please login or register to continue.</p>
+		<div>
+			<button class="btn login-btn">Login</button>
+			<button class="btn register-btn">Register</button>
+		</div>
+	</div>
+
+
+    <script>
+		// Add event listener to the login button
+		document.querySelector('.login-btn').addEventListener('click', function() {
+			window.location.href = '/adminLogin';
+		});
+
+		// Add event listener to the register button
+		document.querySelector('.register-btn').addEventListener('click', function() {
+			window.location.href = './adminRegister';
+		});
+
+	</script>
+</body>
+</html>
